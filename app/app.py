@@ -1,4 +1,3 @@
-from argparse import Action
 from api.Mastodon_Api import Mastodon_Api
 from time import sleep
 from database.database import Database
@@ -31,18 +30,33 @@ class Application:
         self.api._userApiInstance.account_unblock(account)
 
     def start(self):
-        while True:
-            sleep(2.6)
-            notifications = self.api.getNotifications()
-            accounts_reaching_user = []
-            [accounts_reaching_user.append(notification['account']['id']) for notification in notifications if notification['account']['id'] not in accounts_reaching_user]
-            if len(accounts_reaching_user) > 0:
-                for account in accounts_reaching_user:
-                    if(self.isItThreat(account)):
-                        self.actionsForTheAccount(account)
-                        print("Done")
-            else:
-                print("No account")
+        try:
+            self.database.createTable()
+            while True:
+                sleep(2.6)
+                notifications = self.api.getNotifications()
+                accounts_reaching_user = []
+                [accounts_reaching_user.append(notification['account']['id']) for notification in notifications if notification['account']['id'] not in accounts_reaching_user]
+                if len(accounts_reaching_user) > 0:
+                    for account in accounts_reaching_user:
+                        if(not self.database.checkIfRecordExists(int(account))):
+                            print("wsp")
+                            account_data = self.api.getAccountData(account,False)
+                            print(str(account_data['created_at']))
+                            threat = self.isItThreat(account_data)
+                            if(threat):
+                                self.actionsForTheAccount(account)
+                                print("Done")
+                            else:
+                                print("Not a threat")
+
+                            self.database.insertData(int(account_data['id']), str(account_data['username']), threat)
+                        else:
+                            print("Record exists")
+                else:
+                    print("No account")
+        except Exception:
+            print("Something went wrong with the app")      
                 
     
 

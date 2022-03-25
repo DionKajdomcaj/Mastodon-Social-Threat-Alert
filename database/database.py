@@ -1,4 +1,5 @@
 import sqlite3 as sql
+from traceback import print_tb
 
 class Database:
     def __init__(self):
@@ -15,8 +16,7 @@ class Database:
             CREATE TABLE HandledAccounts (
                 ID INTEGER PRIMARY KEY,
                 USERNAME TEXT,
-                THREAT BOOL,
-                VIOLATIONS INT DEFAULT 0
+                THREAT BOOL
             );
             ''')
             print("SUCCESSFULLY CREATED THE TABLE")
@@ -31,6 +31,51 @@ class Database:
             print("Table dropped")
         except Exception:
             print("Table not dropped ERROR")
+    
+    def closeConnection(self):
+        try:
+            self.connection.commit()
+            self.connection.close()
+            print("Database Closed")
+        except Exception:
+            print("Database not closed. ERROR")
+
+    def checkInstance(self, variable, v_type):
+        return type(variable) == v_type
+
+    def insertData(self, account_id, username, threat ):
+        try:
+            if(not self.checkInstance(account_id, int)):
+                raise Exception("Invalid type for account Id")
+
+            if(not self.checkInstance(username, str)):
+                raise Exception("Invalid type for Username")
+
+            if(not self.checkInstance(threat, bool)):
+                raise Exception("Invalid type for threat")
+
+            values = (account_id, username, threat)
+            execute_str = 'INSERT INTO HandledAccounts (id, username, threat) VALUES {}'.format(values)
+            self.cursor.execute(execute_str)
+            print("Data successfully inserted")
+
+        except Exception:
+            print(Exception)
+
+    def checkIfRecordExists(self, account_id):
+        try:
+            if(not self.checkInstance(account_id, int)):
+                raise Exception("Invalid type for account id")
+
+            execute_str = 'SELECT * FROM HandledAccounts WHERE id = {}'.format(account_id)
+            self.cursor.execute(execute_str)
+            result = self.cursor.fetchall()
+            print(len(result))
+            return len(result) > 0 
+        except Exception:
+            print("Something went wrong with query. ERROR")
+
+
 
     
 

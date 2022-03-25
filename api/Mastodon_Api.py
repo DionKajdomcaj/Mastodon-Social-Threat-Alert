@@ -72,15 +72,16 @@ class Mastodon_Api:
         return self._userApiInstance.account(account_id) if not admin else self._adminApiInstance.admin_account(account_id)
 
     def blockAccount(self, account_id):
-        return self._userApiInstance.account_block(account_id)
+        self._userApiInstance.account_block(account_id)
 
     def restrictAccount(self, account_id, admin = True, warning = True):
         if admin and warning : 
-            return self._adminApiInstance.admin_account_moderate(account_id)
+            self._adminApiInstance.admin_account_moderate(account_id)
         elif admin and (not warning) and self.getAccountData()['domain'] == self._mastodonServer[8:len(self._mastodonServer)]: 
-            return self._adminApiInstance.admin_account_moderate(account_id, "disable")
+            self._adminApiInstance.admin_account_moderate(account_id, "disable")
         else:
-            return None
+            pass
+        
 
 
     

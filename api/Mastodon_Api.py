@@ -81,7 +81,7 @@ class Mastodon_Api:
             self._adminApiInstance.admin_account_moderate(account_id, "disable")
         else:
             pass
-        
+
 
 
     

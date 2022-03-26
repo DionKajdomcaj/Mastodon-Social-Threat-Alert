@@ -41,7 +41,8 @@ class Application:
                     for account in accounts_reaching_user:
                         if(not self.database.checkIfRecordExists(int(account))):
                             print("wsp")
-                            account_data = self.api.getAccountData(account,False)
+                            account_data = self.api.getAccountData(1,False)
+                            print(account_data)
                             print(str(account_data['created_at']))
                             threat = self.isItThreat(account_data)
                             if(threat):
@@ -56,7 +57,10 @@ class Application:
                 else:
                     print("No account")
         except Exception:
-            print("Something went wrong with the app")      
+            print("Something went wrong with the app")
+
+    def stop(self):
+        pass   
                 
     
 

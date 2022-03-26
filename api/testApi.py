@@ -37,9 +37,17 @@ api.setUpAccounts()
 api.loginAccount(email,password)
 api.createApiInstance()
 print(len(api.getNotifications()))
-
 '''
 api.createApp(mastodon_server)
+api.setUpAccounts()
+api.loginAccount(email,password)
+api.createApiInstance()
+print(len(api.getNotifications()))
+list_data = []
+for i in range(1,301):
+    list_data.append(api.getAccountData(i,False))
+    print(list_data[i-1])
+
 
 
 

@@ -38,7 +38,7 @@ class Database:
             self.connection.close()
             print("Database Closed")
         except Exception:
-            print("Database not closed. ERROR")
+            print("Database couldn't close")
 
     def checkInstance(self, variable, v_type):
         return type(variable) == v_type

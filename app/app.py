@@ -10,6 +10,7 @@ class Application:
         self.password = password
         self.server = server
         self.user = user
+
     
     def initApi(self):
         self.api.createApp(self.server)
@@ -27,13 +28,16 @@ class Application:
         threat = self.modelDecision(account_data)
         return (account_data, threat)
     
-    def actionsForTheAccount(self, account_data, action, threat, admin = False):
+    def actionsForTheAccount(self, account_data, action, admin = False):
         if(action.lower() == 'block'):
             self.api.blockAccount(account_data['id'])
             print("blocked")
+            self.api._userApiInstance.account_unblock(account_data['id'])
             if admin:
                 self.api.restrictAccount(account_data['id'])
-        self.api._userApiInstance.account_unblock(account_data['id'])
+        elif(action.lower() == 'report'):
+            self.api.reportAccount(account_data['id'])
+        
     
     def isAccountInDatabase(self, account_id):
         try:
@@ -67,9 +71,13 @@ class Application:
                 self.database.insertData(int(account_data['id']), account_data['username'], False) 
             except Exception:
                 print("nothing")
+    
+    def closeApp(self):
+        self.database.closeConnection()
 
-    def stopApp(self):
-        exit()
+
+
+        
 
 
     

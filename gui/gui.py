@@ -1,13 +1,11 @@
 
-from cgi import test
-from cgitb import text
-from email.mime import image
-from threading import Event
-from threading import Thread
 import time
 import tkinter as tk
 from PIL import ImageTk, Image
 from tkinter.ttk import Combobox
+from tkinter.messagebox import showerror
+from tkinter.messagebox import showinfo
+import sys
 
 from numpy import rot90
 from app.app import Application
@@ -21,8 +19,8 @@ class LogIn(tk.Tk):
         self.password = ''
         self.server = ''
         self.action = ''
-        self.widgets = {'main' : [], 'running' : [], 'action' : set([])}
-        self.thevent = Event()
+        self.widgets = {'main' : [], 'running' : set([]), 'action' : set([])}
+        self.protocol('WM_DELETE_WINDOW', sys.exit)
 
         self.title('Mastodon Threat Alert')
 
@@ -41,8 +39,6 @@ class LogIn(tk.Tk):
         self.widgets['main'].append(self.main_label1)
 
         self.canvas = tk.Canvas(self, width = 200, height = 250, bg = 'light blue', highlightthickness = 0)
-        #self.canvas.pack_propagate(False)
-        
 
         self.main_entry1 = tk.Entry(self)
         self.widgets['main'].append(self.main_entry1)
@@ -55,6 +51,9 @@ class LogIn(tk.Tk):
 
         self.main_label3 = tk.Label(self, text = 'Mastodon Server', font = ('Ariel', 14), bg = 'light blue')
         self.widgets['main'].append(self.main_label3)
+
+        self.main_errorlabel = tk.Label(self, text = 'You have an error in credentials!', font = ('Ariel', 14))
+        self.empty_label2 = tk.Label(self, bg = 'light blue')
 
         self.main_entry3 = tk.Entry(self)
         self.widgets['main'].append(self.main_entry3)
@@ -80,6 +79,9 @@ class LogIn(tk.Tk):
 
         self.main_button1.pack()
 
+        self.running_end = tk.Button(self, text = "Stop the app", command = self.stopApp)
+        self.widgets['running'].add(self.running_end)
+
         self.img = Image.open('gui/images/bg2.png')
         self.resizable_img = self.img.resize((200,250), Image.ANTIALIAS)
         self.new_image = ImageTk.PhotoImage(self.resizable_img)
@@ -88,21 +90,20 @@ class LogIn(tk.Tk):
         self.canvas.image_types = 'png' 
 
         self.running_label1 = tk.Label(self, text = "The program state is:\n Currently running...", font = ("Ariel",20), bg = 'light blue')
-        self.widgets['running'].append(self.running_label1)
+        self.widgets['running'].add(self.running_label1)
 
         self.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
         self.resizable(0,0)
 
     def startApp(self):
-        self.app = Application(self.username, self.password, self.server)
+        try:
+            self.app = Application(self.username, self.password, self.server)
+            self.app.initApi()
+            self.runningScreen()
+            self.callSession()
+        except Exception:
+            showerror(title=None, message = 'Error login credentials')
 
-        self.running_end = tk.Button(self, text = "Stop the app", command = self.app.stopApp)
-        self.widgets['running'].append(self.running_end)
-
-        self.app.initApi()
-        self.runningScreen()
-        self.callSession()
-        
     def getInput(self, event):
         print(event)
         self.username = self.main_entry1.get()
@@ -118,21 +119,28 @@ class LogIn(tk.Tk):
     
     def getActionInput(self):
         self.action = self.action_combobox.get()
+        self.update()
     
     def callSession(self):
         while True:
             self.update()
-            time.sleep(2.4)
             print("running")
             try:
-                accounts_reaching_user = self.app.startSession()
+                self.accounts_reaching_user = []
+                self.after(2400, self.sendRequest)
+                
+                t_end = time.time() + 2.5
 
-                if len(accounts_reaching_user) > 0:
-                    for account in accounts_reaching_user:
+                while time.time() <= t_end:
+                    self.update()
+
+                if len(self.accounts_reaching_user) > 0:
+                    for account in self.accounts_reaching_user:
                         threat_checked_account = self.app.isItThreat(account)
                         account_data = threat_checked_account[0]
                         threat_data = threat_checked_account[1]
                         if threat_data:
+                            showinfo("You have a threat!\n Go back to take actions !")
                             self.done = False
 
                             self.string_var = tk.StringVar()
@@ -141,12 +149,12 @@ class LogIn(tk.Tk):
                             self.widgets['action'].add(self.action_combobox)
                             self.action_button = tk.Button(self, text = 'Take action', command = lambda : self.takeAction(account_data,threat_data))
                             self.widgets['action'].add(self.action_button)
+
                             self.cleanRunning()
                             while not self.done:
                                 self.update()
                                 print('not done')
                             self.cleanAction()
-
                         self.app.insertAccountInDatabase(account_data, threat_data)
             except Exception:
                 print("Error")
@@ -156,7 +164,9 @@ class LogIn(tk.Tk):
             widget.pack_forget()
         for widget in self.widgets['running']:
             widget.pack()
+
     def takeAction(self, account_data, threat_data):
+        self.focus_force()
         action = self.action_combobox.get()
         self.app.actionsForTheAccount(account_data, action, threat_data)
         self.done = True
@@ -166,12 +176,21 @@ class LogIn(tk.Tk):
             widget.pack_forget()
         for widget in self.widgets['action']:
             widget.pack()
-    
+        
     def cleanAction(self):
         for widget in self.widgets['action']:
             widget.pack_forget()
         for widget in self.widgets['running']:
             widget.pack()
+
+    def sendRequest(self):
+        self.accounts_reaching_user = self.app.startSession()
+
+    def stopApp(self):
+        self.app.closeApp()
+        self.destroy()
+        sys.exit()
+        
 
 
 

@@ -124,29 +124,32 @@ class LogIn(tk.Tk):
             self.update()
             time.sleep(2.4)
             print("running")
-            accounts_reaching_user = self.app.startSession()
-            
-            if len(accounts_reaching_user) > 0:
-                for account in accounts_reaching_user:
-                    threat_checked_account = self.app.isItThreat(account)
-                    account_data = threat_checked_account[0]
-                    threat_data = threat_checked_account[1]
-                    if threat_data:
-                        self.done = False
+            try:
+                accounts_reaching_user = self.app.startSession()
 
-                        self.string_var = tk.StringVar()
-                        self.action_combobox = Combobox(self, textvariable = self.string_var)
-                        self.action_combobox['values'] = ("Nothing", "Block", "Report")
-                        self.widgets['action'].add(self.action_combobox)
-                        self.action_button = tk.Button(self, text = 'Take action', command = lambda : self.takeAction(account_data,threat_data))
-                        self.widgets['action'].add(self.action_button)
-                        self.cleanRunning()
-                        while not self.done:
-                            self.update()
-                            print('not done')
-                        self.cleanAction()
-                        
-                    self.app.insertAccountInDatabase(account_data, threat_data)
+                if len(accounts_reaching_user) > 0:
+                    for account in accounts_reaching_user:
+                        threat_checked_account = self.app.isItThreat(account)
+                        account_data = threat_checked_account[0]
+                        threat_data = threat_checked_account[1]
+                        if threat_data:
+                            self.done = False
+
+                            self.string_var = tk.StringVar()
+                            self.action_combobox = Combobox(self, textvariable = self.string_var)
+                            self.action_combobox['values'] = ("Nothing", "Block", "Report")
+                            self.widgets['action'].add(self.action_combobox)
+                            self.action_button = tk.Button(self, text = 'Take action', command = lambda : self.takeAction(account_data,threat_data))
+                            self.widgets['action'].add(self.action_button)
+                            self.cleanRunning()
+                            while not self.done:
+                                self.update()
+                                print('not done')
+                            self.cleanAction()
+
+                        self.app.insertAccountInDatabase(account_data, threat_data)
+            except Exception:
+                print("Error")
     
     def runningScreen(self):
         for widget in self.widgets['main']:
@@ -158,7 +161,6 @@ class LogIn(tk.Tk):
         self.app.actionsForTheAccount(account_data, action, threat_data)
         self.done = True
         
-
     def cleanRunning(self):
         for widget in self.widgets['running']:
             widget.pack_forget()

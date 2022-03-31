@@ -68,7 +68,7 @@ class Mastodon_Api:
     def clearNotifications(self, user=True):
         self._userApiInstance.notifications_clear() if user else self._adminApiInstance.notifications_clear()
 
-    def getAccountData(self, account_id, admin=True):
+    def getAccountData(self, account_id, admin=False):
         return self._userApiInstance.account(account_id) if not admin else self._adminApiInstance.admin_account(account_id)
 
     def blockAccount(self, account_id):
@@ -81,6 +81,10 @@ class Mastodon_Api:
             self._adminApiInstance.admin_account_moderate(account_id, "disable")
         else:
             pass
+    
+    def getFollowingAccounts(self):
+        my_id = self._userApiInstance.me()['id']
+        return self._userApiInstance.account_following(my_id)
 
 
 

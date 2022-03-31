@@ -16,56 +16,60 @@ class Application:
         self.api.setUpAccounts()
         self.api.loginAccount(self.username, self.password, self.user)
         self.api.createApiInstance()
+        self.database.createTable()
+        self.trustFollowings()
 
-    def isItThreat(self, account):
+    def modelDecision(self, account_data):
         return True
+
+    def isItThreat(self, account_id):
+        account_data = self.api.getAccountData(account_id)
+        threat = self.modelDecision(account_data)
+        return (account_data, threat)
     
-    def actionsForTheAccount(self, account, admin = False):
-        action = input('Decide the action for the account')
+    def actionsForTheAccount(self, account_data, action, threat, admin = False):
         if(action.lower() == 'block'):
-            self.api.blockAccount(account)
+            self.api.blockAccount(account_data['id'])
             print("blocked")
             if admin:
-                self.api.restrictAccount(account)
-        self.api._userApiInstance.account_unblock(account)
-
-    def start(self):
-        try:
-            self.database.createTable()
-            while True:
-                sleep(2.6)
-                notifications = self.api.getNotifications()
-                accounts_reaching_user = []
-                [accounts_reaching_user.append(notification['account']['id']) for notification in notifications if notification['account']['id'] not in accounts_reaching_user]
-                if len(accounts_reaching_user) > 0:
-                    for account in accounts_reaching_user:
-                        if(not self.database.checkIfRecordExists(int(account))):
-                            print("wsp")
-                            account_data = self.api.getAccountData(1,False)
-                            print(account_data)
-                            print(str(account_data['created_at']))
-                            threat = self.isItThreat(account_data)
-                            if(threat):
-                                self.actionsForTheAccount(account)
-                                print("Done")
-                            else:
-                                print("Not a threat")
-
-                            self.database.insertData(int(account_data['id']), str(account_data['username']), threat)
-                        else:
-                            print("Record exists")
-                else:
-                    print("No account")
-        except Exception:
-            print("Something went wrong with the app")
-
-    def stop(self):
-        pass   
-                
+                self.api.restrictAccount(account_data['id'])
+        self.api._userApiInstance.account_unblock(account_data['id'])
     
+    def isAccountInDatabase(self, account_id):
+        try:
+            return self.database.checkIfRecordExists(account_id)
+        except Exception:
+            return -1
 
-            
+    def insertAccountInDatabase(self, account_data, threat):
+        try:
+            self.database.insertData(int(account_data['id']), account_data['username'],threat)
+        except Exception:
+            print("DIDNT INSERT DATA. ERROR")
 
+    def startSession(self):
+        try:
+            notifications = self.api.getNotifications()
+            accounts_reaching_user = []
+            [accounts_reaching_user.append(notification['account']['id']) 
+            for notification in notifications 
+            if notification['account']['id'] not in accounts_reaching_user
+            and not self.isAccountInDatabase(int(notification['account']['id']))]
+
+            return accounts_reaching_user
+        except Exception:
+            return -1
+
+    def trustFollowings(self):
+        following_accounts = self.api.getFollowingAccounts()   
+        for account_data in following_accounts:
+            try:
+                self.database.insertData(int(account_data['id']), account_data['username'], False) 
+            except Exception:
+                print("nothing")
+
+    def stopApp(self):
+        exit()
 
 
     

@@ -1,11 +1,10 @@
-from time import sleep
-from gui.gui import AppGUI
+from gui.gui import LogIn
+
 
 '''
 application = Application("kajdo", "dinoni12", "mastodon.elte.hu")
 application.initApi()
 application.start()
 '''
-root = AppGUI()
-
+root = LogIn()
 root.mainloop()

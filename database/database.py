@@ -69,7 +69,6 @@ class Database:
             execute_str = 'SELECT * FROM HandledAccounts WHERE id = {}'.format(account_id)
             self.cursor.execute(execute_str)
             result = self.cursor.fetchall()
-            print(len(result))
             return len(result) > 0
         except Exception:
             print('problem query')

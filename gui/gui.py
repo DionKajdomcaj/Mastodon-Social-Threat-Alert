@@ -168,7 +168,6 @@ class LogIn(tk.Tk):
             widget.pack()
 
     def takeAction(self, account_data, threat_data):
-        self.focus_force()
         action = self.action_combobox.get()
         self.app.actionsForTheAccount(account_data, action, threat_data)
         self.done = True

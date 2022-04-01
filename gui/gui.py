@@ -1,4 +1,6 @@
 
+import os
+from threading import Thread
 import time
 import tkinter as tk
 from PIL import ImageTk, Image
@@ -20,7 +22,7 @@ class LogIn(tk.Tk):
         self.server = ''
         self.action = ''
         self.widgets = {'main' : [], 'running' : set([]), 'action' : set([])}
-        self.protocol('WM_DELETE_WINDOW', sys.exit)
+        
 
         self.title('Mastodon Threat Alert')
 
@@ -100,6 +102,7 @@ class LogIn(tk.Tk):
             self.app = Application(self.username, self.password, self.server)
             self.app.initApi()
             self.runningScreen()
+            self.protocol('WM_DELETE_WINDOW', self.stopApp)
             self.callSession()
         except Exception:
             showerror(title=None, message = 'Error login credentials')
@@ -128,11 +131,11 @@ class LogIn(tk.Tk):
             try:
                 self.accounts_reaching_user = []
                 self.after(2400, self.sendRequest)
-                
                 t_end = time.time() + 2.5
 
                 while time.time() <= t_end:
                     self.update()
+
 
                 if len(self.accounts_reaching_user) > 0:
                     for account in self.accounts_reaching_user:
@@ -140,9 +143,8 @@ class LogIn(tk.Tk):
                         account_data = threat_checked_account[0]
                         threat_data = threat_checked_account[1]
                         if threat_data:
-                            showinfo("You have a threat!\n Go back to take actions !")
+                            showinfo(message = "You have a threat!\n Go back to take actions !")
                             self.done = False
-
                             self.string_var = tk.StringVar()
                             self.action_combobox = Combobox(self, textvariable = self.string_var)
                             self.action_combobox['values'] = ("Nothing", "Block", "Report")
@@ -185,11 +187,12 @@ class LogIn(tk.Tk):
 
     def sendRequest(self):
         self.accounts_reaching_user = self.app.startSession()
+        print(self.accounts_reaching_user)
 
     def stopApp(self):
         self.app.closeApp()
         self.destroy()
-        sys.exit()
+        os._exit(0)
         
 
 

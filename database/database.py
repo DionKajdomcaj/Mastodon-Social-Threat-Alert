@@ -66,14 +66,14 @@ class Database:
         try:
             if(not self.checkInstance(account_id, int)):
                 raise Exception("Invalid type for account id")
-
             execute_str = 'SELECT * FROM HandledAccounts WHERE id = {}'.format(account_id)
             self.cursor.execute(execute_str)
             result = self.cursor.fetchall()
             print(len(result))
-            return len(result) > 0 
+            return len(result) > 0
         except Exception:
-            print("Something went wrong with query. ERROR")
+            print('problem query')
+
 
 
 

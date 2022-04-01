@@ -33,8 +33,6 @@ class Application:
             self.api.blockAccount(account_data['id'])
             print("blocked")
             self.api._userApiInstance.account_unblock(account_data['id'])
-            if admin:
-                self.api.restrictAccount(account_data['id'])
         elif(action.lower() == 'report'):
             self.api.reportAccount(account_data['id'])
         
@@ -62,13 +60,13 @@ class Application:
 
             return accounts_reaching_user
         except Exception:
-            return -1
+            return []
 
     def trustFollowings(self):
         following_accounts = self.api.getFollowingAccounts()   
         for account_data in following_accounts:
             try:
-                self.database.insertData(int(account_data['id']), account_data['username'], False) 
+                self.database.insertData(int(account_data['id']), str(account_data['username']), False) 
             except Exception:
                 print("nothing")
     

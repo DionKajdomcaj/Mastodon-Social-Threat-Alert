@@ -1,5 +1,6 @@
-from dataclasses import dataclass
+from sys import path
 from typing import Tuple
+path.append("/MASTODON-SOCIAL-THREAT-ALERT/database/")
 from database.database import Database
 class DatabaseTests:
     def testCreatingDatabase(self):

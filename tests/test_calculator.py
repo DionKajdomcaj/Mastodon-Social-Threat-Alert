@@ -2,8 +2,9 @@
 Unit tests for the calculator library
 """
 #We add all the files in the app directory so that they can be found
-##from sys import path
+from sys import path
 ##from database import calculator
+path.append('//MASTODON-SOCIAL-THREAT-ALERT')
 
 from experiment import calculator
 

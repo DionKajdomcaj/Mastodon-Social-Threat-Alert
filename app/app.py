@@ -69,7 +69,7 @@ class Application:
             try:
                 account_id = int(account_data['id'])
                 username = str(account_data['username'])
-                self.database.insertData(account_id, username , False) 
+                self.database.insertData(account_id, username, False) 
             except Exception:
                 print("nothing")
     

@@ -1,9 +1,26 @@
 version: 2
 jobs:
+  publish-github-release:
+    docker:
+      - image: cibuilds/github:0.10
+
+    working_directory: ~/repo
+
+    steps:
+
+      - checkout
+
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./dist
   build:
+
     docker:
       - image: circleci/python:3.7
+
     working_directory: ~/repo
+
     steps:
       # Step 1: obtain repo from GitHub
       - checkout
@@ -20,3 +37,36 @@ jobs:
           command: |
             . venv/bin/activate
             flake8 --exclude=venv* --statistics --ignore=E712,E711,W293,W291,W292,E127,E128,E126
+            flake8 --exclude=venv* --statistics --ignore=E712,E711,W293,W291,W292,E127,E128,E126,E501
+            pytest -v --cov
+            
+      # Step 4: check executables
+      - run:
+          name: check executables
+          command: |    
+            . venv/bin/activate
+            pyinstaller EasyChess.py -F
+            pyinstaller EasyChess.py -F --noconsole
+      
+      # Step 4: Upload artifacts in dist:
+      - store_artifacts:  
+          path: dist
+
+            pytest -v --cov 
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - publish-github-release:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
+            tags:
+              only: /^\d+\.\d+\.\d+$/

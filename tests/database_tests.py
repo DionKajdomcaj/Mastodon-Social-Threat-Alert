@@ -1,5 +1,3 @@
-from sys import path
-path.append("/MASTODON-SOCIAL-THREAT-ALERT/database/")
 from database.database import Database
 
 

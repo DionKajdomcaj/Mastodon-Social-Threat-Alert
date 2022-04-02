@@ -29,33 +29,45 @@ class LogIn(tk.Tk):
         y_cordinate = int((screen_height / 2) - (window_height / 2))
         self['bg'] = 'light blue'
 
-        self.welcome_label = tk.Label(self, text='Mastodon Threat Alert', font=('Ariel', 18), bg='light blue')
+        self.welcome_label = tk.Label(self, text='Mastodon Threat Alert', 
+                                    font=('Ariel', 18), bg='light blue')
+
         self.empty_label = tk.Label(self, bg='light blue')
         
-        self.main_label1 = tk.Label(self, text='Mastodon Username', font=('Ariel', 14), bg='light blue')
+        self.main_label1 = tk.Label(self, text='Mastodon Username', 
+                                    font=('Ariel', 14), bg='light blue')
         self.widgets['main'].append(self.main_label1)
 
-        self.canvas = tk.Canvas(self, width=200, height=250, bg='light blue', highlightthickness=0)
+        self.canvas = tk.Canvas(self, width=200, height=250, 
+                                bg='light blue', highlightthickness=0)
 
         self.main_entry1 = tk.Entry(self)
         self.widgets['main'].append(self.main_entry1)
 
-        self.main_label2 = tk.Label(self, text='Mastodon Password', font=('Ariel', 14), bg='light blue')
+        self.main_label2 = tk.Label(self, text='Mastodon Password', 
+                                    font=('Ariel', 14), bg='light blue')
+
         self.widgets['main'].append(self.main_label2)
 
         self.main_entry2 = tk.Entry(self, show="*")
         self.widgets['main'].append(self.main_entry2)
 
-        self.main_label3 = tk.Label(self, text='Mastodon Server', font=('Ariel', 14), bg='light blue')
+        self.main_label3 = tk.Label(self, text='Mastodon Server', 
+                                    font=('Ariel', 14), bg='light blue')
+
         self.widgets['main'].append(self.main_label3)
 
-        self.main_errorlabel = tk.Label(self, text='You have an error in credentials!', font=('Ariel', 14))
+        self.main_errorlabel = tk.Label(self, text='You have an error in credentials!', 
+                                        font=('Ariel', 14))
+
         self.empty_label2 = tk.Label(self, bg='light blue')
 
         self.main_entry3 = tk.Entry(self)
         self.widgets['main'].append(self.main_entry3)
 
-        self.main_button1 = tk.Button(self, text='Start App', state='disabled', command=self.startApp)
+        self.main_button1 = tk.Button(self, text='Start App', 
+                                    state='disabled', command=self.startApp)
+
         self.widgets['main'].append(self.main_button1)
 
         self.welcome_label.pack()
@@ -86,7 +98,9 @@ class LogIn(tk.Tk):
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.new_image)
         self.canvas.image_types = 'png' 
 
-        self.running_label1 = tk.Label(self, text="The program state is:\n Currently running...", font=("Ariel",20), bg='light blue')
+        self.running_label1 = tk.Label(self, 
+                                text="The program state is:\n Currently running...",
+                                     font=("Ariel",20), bg='light blue')
         self.widgets['running'].add(self.running_label1)
 
         self.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))

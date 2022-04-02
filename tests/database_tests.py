@@ -1,7 +1,8 @@
 from sys import path
-from typing import Tuple
 path.append("/MASTODON-SOCIAL-THREAT-ALERT/database/")
 from database.database import Database
+
+
 class DatabaseTests:
     def testCreatingDatabase(self):
         database = Database()
@@ -27,8 +28,10 @@ class DatabaseTests:
         database.dropTable()
         database.createTable()
 
-        account_data = {'id' : 123412, 'username' : 'Dion', 'threat' : True}
-        assert database.insertData(account_data['id'], account_data['username'], account_data['threat']) == True
+        id = 1234123
+        user = 'Dion'
+        threat = False
+        assert database.insertData(id, user, threat) == True
 
     def testCheckRecordExistence(self):
         database = Database()
@@ -37,27 +40,24 @@ class DatabaseTests:
 
         assert False == database.checkIfRecordExists(51123)
 
-        account_data = {'id' : 123412, 'username' : 'Dion', 'threat' : True}
-        database.insertData(account_data['id'], account_data['username'], account_data['threat'])
+        id = 1234123
+        user = 'Dion'
+        threat = False
+        database.insertData(id, user, threat)
 
-        assert database.checkIfRecordExists(account_data['id']) == True
+        assert database.checkIfRecordExists(id) == True
 
     def testCloseConnection(self):
         database = Database()
         database.dropTable()
         database.createTable()
 
-        account_data = {'id' : 123412, 'username' : 'Dion', 'threat' : True}
-        database.insertData(account_data['id'], account_data['username'], account_data['threat'])
+        id = 1234123
+        user = 'Dion'
+        threat = False
+        database.insertData(id, user, threat)
 
         assert True == database.closeConnection()
 
         for iter in range(3):
             assert False == database.closeConnection()
-    
-
-
-
-
-
-

@@ -2,7 +2,7 @@
 import pandas as pd
 import pickle
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
+#from sklearn.model_selection import train_test_split
 
 
 class Model:
@@ -17,7 +17,6 @@ class Model:
         self.y_test = None
         
     def train_model(self):
-        #self.x_train, self.x_test, self.y_train, self.y_test = train_test_split()
         pass
 
     def test_model(self, test_data):

@@ -51,8 +51,6 @@ jobs:
       # Step 4: Upload artifacts in dist:
       - store_artifacts:  
           path: dist
-
-            pytest -v --cov 
 workflows:
   version: 2
   main:

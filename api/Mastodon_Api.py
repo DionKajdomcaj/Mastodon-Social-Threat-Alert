@@ -1,5 +1,5 @@
 from mastodon import Mastodon
-import os
+
 
 class Mastodon_Api:
 

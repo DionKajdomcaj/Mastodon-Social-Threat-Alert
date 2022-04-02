@@ -57,10 +57,6 @@ class LogIn(tk.Tk):
 
         self.widgets['main'].append(self.main_label3)
 
-        self.main_errorlabel = tk.Label(self, 
-                                        text='You have an error in credentials!', 
-                                        font=('Ariel', 14))
-
         self.empty_label2 = tk.Label(self, bg='light blue')
 
         self.main_entry3 = tk.Entry(self)
@@ -90,7 +86,7 @@ class LogIn(tk.Tk):
 
         self.running_end = tk.Button(self, text="Stop the app", 
                                     command=self.stopApp)
-                                    
+
         self.widgets['running'].add(self.running_end)
 
         self.img = Image.open('gui/images/bg2.png')
@@ -105,7 +101,8 @@ class LogIn(tk.Tk):
                                      font=("Ariel",20), bg='light blue')
         self.widgets['running'].add(self.running_label1)
 
-        self.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
+        self.geometry("{}x{}+{}+{}"
+                    .format(window_width, window_height, x_cordinate, y_cordinate))
         self.resizable(0,0)
 
     def startApp(self):

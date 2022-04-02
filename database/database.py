@@ -80,12 +80,3 @@ class Database:
             return len(result) > 0
         except Exception:
             print('problem query')
-
-
-
-
-    
-
-
-
-        

@@ -1,16 +1,12 @@
-
 import os
-from threading import Thread
 import time
 import tkinter as tk
 from PIL import ImageTk, Image
 from tkinter.ttk import Combobox
 from tkinter.messagebox import showerror
 from tkinter.messagebox import showinfo
-import sys
-
-from numpy import rot90
 from app.app import Application
+
 
 class LogIn(tk.Tk):
 
@@ -21,7 +17,7 @@ class LogIn(tk.Tk):
         self.password = ''
         self.server = ''
         self.action = ''
-        self.widgets = {'main' : [], 'running' : set([]), 'action' : set([])}
+        self.widgets = {'main':[], 'running':set([]), 'action':set([])}
         
 
         self.title('Mastodon Threat Alert')

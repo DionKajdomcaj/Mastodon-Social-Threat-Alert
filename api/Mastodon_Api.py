@@ -59,22 +59,25 @@ class Mastodon_Api:
             api_base_url=self._mastodonServer
         )
 
-    def getNotifications(self, user=True):
-        return self._userApiInstance.notifications() if user else self._adminApiInstance.notifications()
+    def getNotifications(self):
+        return self._userApiInstance.notifications()
 
-    def getNumberOfNotifications(self, user=True):
-         return len(self._userApiInstance.notifications()) if user else len(self._adminApiInstance.notifications())
+    def getNumberOfNotifications(self):
+         return len(self._userApiInstance.notifications())
 
-    def clearNotifications(self, user=True):
-        self._userApiInstance.notifications_clear() if user else self._adminApiInstance.notifications_clear()
+    def clearNotifications(self):
+        self._userApiInstance.notifications_clear()
 
     def getAccountData(self, account_id, admin=False):
-        return self._userApiInstance.account(account_id) if not admin else self._adminApiInstance.admin_account(account_id)
+        if not admin:
+            return self._userApiInstance.account(account_id)
+        else:
+            return self._adminApiInstance.admin_account(account_id)
 
     def blockAccount(self, account_id):
         self._userApiInstance.account_block(account_id)
 
-    def restrictAccount(self, account_id, admin = True, warning = True):
+    def restrictAccount(self, account_id, admin=True, warning=True):
         if admin and warning : 
             self._adminApiInstance.admin_account_moderate(account_id)
         elif admin and (not warning) and self.getAccountData()['domain'] == self._mastodonServer[8:len(self._mastodonServer)]: 

@@ -5,7 +5,7 @@ Unit tests for the calculator library
 ##from sys import path
 ##from database import calculator
 
-import calculator
+from database import calculator
 
 class TestCalculator:
 

@@ -167,8 +167,8 @@ class LogIn(tk.Tk):
 
                             self.action_button = tk.Button(self, 
                                     text='Take action', 
-                                    command=lambda : 
-                                        self.takeAction(account_data, threat_data))
+                                    command=lambda :
+                                    self.takeAction(account_data, threat_data))
 
                             self.widgets['action'].add(self.action_button)
 
@@ -177,7 +177,8 @@ class LogIn(tk.Tk):
                                 self.update()
                                 print('not done')
                             self.cleanAction()
-                        self.app.insertAccountInDatabase(account_data, threat_data)
+                        self.app.insertAccountInDatabase(account_data, 
+                                                        threat_data)
             except Exception:
                 print("Error")
     

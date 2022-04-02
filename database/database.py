@@ -20,8 +20,10 @@ class Database:
             );
             ''')
             print("SUCCESSFULLY CREATED THE TABLE")
+            return True
         except Exception:
             print("FAILED TO CREATE THE TABLE")
+            return False
 
     def dropTable(self):
         try:
@@ -37,8 +39,10 @@ class Database:
             self.connection.commit()
             self.connection.close()
             print("Database Closed")
+            return True
         except Exception:
             print("Database couldn't close")
+            return False
 
     def checkInstance(self, variable, v_type):
         return type(variable) == v_type
@@ -58,9 +62,11 @@ class Database:
             execute_str = 'INSERT INTO HandledAccounts (id, username, threat) VALUES {}'.format(values)
             self.cursor.execute(execute_str)
             print("Data successfully inserted")
+            return True
 
         except Exception:
-            print(Exception)
+            print("SDi")
+            return False
 
     def checkIfRecordExists(self, account_id):
         try:

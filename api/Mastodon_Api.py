@@ -24,19 +24,19 @@ class Mastodon_Api:
 
         Mastodon.create_app(
             "mastodonApiAppAdmin",
-            api_base_url = self._mastodonServer,
-            to_file = "app/secretFolder/mastodonApiAppAdmin.secret"
+            api_base_url=self._mastodonServer,
+            to_file="app/secretFolder/mastodonApiAppAdmin.secret"
         )  
 
     def setUpAccounts(self):
         self._user = Mastodon(
-            client_id = 'app/secretFolder/mastodonApiAppUser.secret',
-            api_base_url = self._mastodonServer
+            client_id='app/secretFolder/mastodonApiAppUser.secret',
+            api_base_ur =self._mastodonServer
         )
 
         self._admin = Mastodon(
-            client_id = 'app/secretFolder/mastodonApiAppAdmin.secret',
-            api_base_url = self._mastodonServer
+            client_id='app/secretFolder/mastodonApiAppAdmin.secret',
+            api_base_url=self._mastodonServer
         )
         
     def loginAccount(self, username, password, user=True):
@@ -44,19 +44,19 @@ class Mastodon_Api:
             self._user.log_in(
                 username,
                 password,
-                to_file = 'app/secretFolder/usercredentials.secret' 
+                to_file='app/secretFolder/usercredentials.secret' 
             )
         else:
             self._admin.log_in(
                 username,
                 password,
-                to_file = 'app/secretFolder/admincredentials.secret'
+                to_file='app/secretFolder/admincredentials.secret'
             )
     
     def createApiInstance(self):
         self._userApiInstance = Mastodon(
-            access_token = 'app/secretFolder/usercredentials.secret',
-            api_base_url = self._mastodonServer
+            access_token='app/secretFolder/usercredentials.secret',
+            api_base_url=self._mastodonServer
         )
 
     def getNotifications(self, user=True):

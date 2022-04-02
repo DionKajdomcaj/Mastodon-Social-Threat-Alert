@@ -167,7 +167,7 @@ class LogIn(tk.Tk):
 
                             self.action_button = tk.Button(self, 
                                     text='Take action', 
-                                    command=lambda :
+                                    command=lambda:
                                     self.takeAction(account_data, threat_data))
 
                             self.widgets['action'].add(self.action_button)
@@ -213,8 +213,3 @@ class LogIn(tk.Tk):
         self.app.closeApp()
         self.destroy()
         os._exit(0)
-        
-
-
-
-

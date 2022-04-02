@@ -67,7 +67,9 @@ class Application:
         following_accounts = self.api.getFollowingAccounts()   
         for account_data in following_accounts:
             try:
-                self.database.insertData(int(account_data['id']), str(account_data['username']), False) 
+                account_id = int(account_data['id'])
+                username = str(account_data['username'])
+                self.database.insertData(account_id, username , False) 
             except Exception:
                 print("nothing")
     

@@ -157,16 +157,17 @@ class LogIn(tk.Tk):
                             self.done = False
                             self.string_var = tk.StringVar()
                             self.action_combobox = Combobox(self, 
-                                                    textvariable=self.string_var)
+                                                textvariable=self.string_var)
+
                             self.action_combobox['values'] = ("Trust", 
                                                             "Block", 
                                                             "Report")
 
                             self.widgets['action'].add(self.action_combobox)
 
-                            self.action_button = tk.Button(self, text='Take action', 
-                                                command=lambda : 
-                                                self.takeAction(account_data, threat_data))
+                            self.action_button = tk.Button(self, text='Take action',
+                                    command=lambda : 
+                                        self.takeAction(account_data, threat_data))
 
                             self.widgets['action'].add(self.action_button)
 

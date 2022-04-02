@@ -165,7 +165,8 @@ class LogIn(tk.Tk):
 
                             self.widgets['action'].add(self.action_combobox)
 
-                            self.action_button = tk.Button(self, text='Take action',
+                            self.action_button = tk.Button(self, 
+                                    text='Take action', 
                                     command=lambda : 
                                         self.takeAction(account_data, threat_data))
 

@@ -1,9 +1,10 @@
 from api.Mastodon_Api import Mastodon_Api
-from time import sleep
 from database.database import Database
+
+
 class Application:
 
-    def __init__(self, username, password, server, user = True):
+    def __init__(self, username, password, server, user=True):
         self.api = Mastodon_Api()
         self.database = Database()
         self.username = username
@@ -11,7 +12,6 @@ class Application:
         self.server = server
         self.user = user
 
-    
     def initApi(self):
         self.api.createApp(self.server)
         self.api.setUpAccounts()
@@ -28,7 +28,7 @@ class Application:
         threat = self.modelDecision(account_data)
         return (account_data, threat)
     
-    def actionsForTheAccount(self, account_data, action, admin = False):
+    def actionsForTheAccount(self, account_data, action, admin=False):
         if(action.lower() == 'block'):
             self.api.blockAccount(account_data['id'])
             print("blocked")
@@ -36,7 +36,6 @@ class Application:
         elif(action.lower() == 'report'):
             self.api.reportAccount(account_data['id'])
         
-    
     def isAccountInDatabase(self, account_id):
         try:
             return self.database.checkIfRecordExists(account_id)

@@ -57,7 +57,8 @@ class LogIn(tk.Tk):
 
         self.widgets['main'].append(self.main_label3)
 
-        self.main_errorlabel = tk.Label(self, text='You have an error in credentials!', 
+        self.main_errorlabel = tk.Label(self, 
+                                        text='You have an error in credentials!', 
                                         font=('Ariel', 14))
 
         self.empty_label2 = tk.Label(self, bg='light blue')
@@ -77,7 +78,6 @@ class LogIn(tk.Tk):
         self.main_entry1.pack()
         self.main_entry1.bind('<KeyRelease>', self.getInput)
 
-
         self.main_label2.pack()
         self.main_entry2.pack()
         self.main_entry2.bind('<KeyRelease>', self.getInput)
@@ -88,7 +88,9 @@ class LogIn(tk.Tk):
 
         self.main_button1.pack()
 
-        self.running_end = tk.Button(self, text="Stop the app", command=self.stopApp)
+        self.running_end = tk.Button(self, text="Stop the app", 
+                                    command=self.stopApp)
+                                    
         self.widgets['running'].add(self.running_end)
 
         self.img = Image.open('gui/images/bg2.png')

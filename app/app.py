@@ -68,8 +68,8 @@ class Application:
         for account_data in following_accounts:
             try:
                 account_id = int(account_data['id'])
-                user = str(account_data['username'])
-                self.database.insertData(account_id, user, False) 
+                username = str(account_data['username'])
+                self.database.insertData(account_id, username, False) 
             except Exception:
                 print("nothing")
     

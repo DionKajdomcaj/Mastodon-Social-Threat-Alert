@@ -18,8 +18,8 @@ class Mastodon_Api:
 
         Mastodon.create_app(
             "mastodonApiAppUser",
-            api_base_url = self._mastodonServer,
-            to_file = 'app/secretFolder/mastodonApiAppUser.secret'
+            api_base_url=self._mastodonServer,
+            to_file='app/secretFolder/mastodonApiAppUser.secret'
         )  
 
         Mastodon.create_app(

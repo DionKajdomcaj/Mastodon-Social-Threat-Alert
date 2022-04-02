@@ -4,7 +4,7 @@ Unit tests for the calculator library
 #We add all the files in the app directory so that they can be found
 from sys import path
 ##from database import calculator
-path.append('//MASTODON-SOCIAL-THREAT-ALERT')
+path.append('//MASTODON-SOCIAL-THREAT-ALERT/experiment')
 
 from experiment import calculator
 

@@ -151,7 +151,7 @@ class LogIn(tk.Tk):
                         account_data = threat_checked_account[0]
                         threat_data = threat_checked_account[1]
                         if threat_data:
-                            message = 'You have a threat!\n Take action!'
+                            message = 'You have a threat!\nTake action!'
                             showinfo(message=message)
 
                             self.done = False

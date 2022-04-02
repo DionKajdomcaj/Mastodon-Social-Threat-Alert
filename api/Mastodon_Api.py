@@ -31,7 +31,7 @@ class Mastodon_Api:
     def setUpAccounts(self):
         self._user = Mastodon(
             client_id='app/secretFolder/mastodonApiAppUser.secret',
-            api_base_ur=self._mastodonServer
+            api_base_url=self._mastodonServer
         )
 
         self._admin = Mastodon(

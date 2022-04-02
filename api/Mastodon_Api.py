@@ -63,7 +63,7 @@ class Mastodon_Api:
         return self._userApiInstance.notifications()
 
     def getNumberOfNotifications(self):
-         return len(self._userApiInstance.notifications())
+        return len(self._userApiInstance.notifications())
 
     def clearNotifications(self):
         self._userApiInstance.notifications_clear()
@@ -76,14 +76,6 @@ class Mastodon_Api:
 
     def blockAccount(self, account_id):
         self._userApiInstance.account_block(account_id)
-
-    def restrictAccount(self, account_id, admin=True, warning=True):
-        if admin and warning : 
-            self._adminApiInstance.admin_account_moderate(account_id)
-        elif admin and (not warning) and self.getAccountData()['domain'] == self._mastodonServer[8:len(self._mastodonServer)]: 
-            self._adminApiInstance.admin_account_moderate(account_id, "disable")
-        else:
-            pass
     
     def getFollowingAccounts(self):
         my_id = self._userApiInstance.me()['id']

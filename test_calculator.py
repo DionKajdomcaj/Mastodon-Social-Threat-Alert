@@ -2,10 +2,10 @@
 Unit tests for the calculator library
 """
 #We add all the files in the app directory so that they can be found
-from sys import path
-from database import calculator
+##from sys import path
+##from database import calculator
 
-
+import calculator
 
 class TestCalculator:
 

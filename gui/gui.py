@@ -99,12 +99,12 @@ class LogIn(tk.Tk):
         text_running = "The program state is\n Currently running..."
         self.running_label1 = tk.Label(self, 
                                         text=text_running, 
-                                        font=("Ariel",20), bg='light blue')
+                                        font=("Ariel", 20), bg='light blue')
         self.widgets['running'].add(self.running_label1)
 
         self.geometry("{}x{}+{}+{}"
                     .format(window_width, window_height, x, y))
-        self.resizable(0,0)
+        self.resizable(0, 0)
 
     def startApp(self):
         try:
@@ -151,7 +151,7 @@ class LogIn(tk.Tk):
                         account_data = threat_checked_account[0]
                         threat_data = threat_checked_account[1]
                         if threat_data:
-                            message = 'You have a threat!\n Go back to take actions !'
+                            message = 'You have a threat!\n Take action!'
                             showinfo(message=message)
 
                             self.done = False

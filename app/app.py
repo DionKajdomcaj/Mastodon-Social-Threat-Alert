@@ -1,9 +1,10 @@
 from api.Mastodon_Api import Mastodon_Api
-from time import sleep
 from database.database import Database
+
+
 class Application:
 
-    def __init__(self, username, password, server, user = True):
+    def __init__(self, username, password, server, user=True):
         self.api = Mastodon_Api()
         self.database = Database()
         self.username = username
@@ -11,7 +12,6 @@ class Application:
         self.server = server
         self.user = user
 
-    
     def initApi(self):
         self.api.createApp(self.server)
         self.api.setUpAccounts()
@@ -28,7 +28,7 @@ class Application:
         threat = self.modelDecision(account_data)
         return (account_data, threat)
     
-    def actionsForTheAccount(self, account_data, action, admin = False):
+    def actionsForTheAccount(self, account_data, action, admin=False):
         if(action.lower() == 'block'):
             self.api.blockAccount(account_data['id'])
             print("blocked")
@@ -36,7 +36,6 @@ class Application:
         elif(action.lower() == 'report'):
             self.api.reportAccount(account_data['id'])
         
-    
     def isAccountInDatabase(self, account_id):
         try:
             return self.database.checkIfRecordExists(account_id)
@@ -45,7 +44,9 @@ class Application:
 
     def insertAccountInDatabase(self, account_data, threat):
         try:
-            self.database.insertData(int(account_data['id']), account_data['username'],threat)
+            id = int(account_data['id'])
+            username = account_data['username']
+            self.database.insertData(id, username, threat)
         except Exception:
             print("DIDNT INSERT DATA. ERROR")
 
@@ -53,11 +54,11 @@ class Application:
         try:
             notifications = self.api.getNotifications()
             accounts_reaching_user = []
-            [accounts_reaching_user.append(notification['account']['id']) 
-            for notification in notifications 
-            if notification['account']['id'] not in accounts_reaching_user
-            and not self.isAccountInDatabase(int(notification['account']['id']))]
-
+            for notification in notifications:
+                account_id = notification['account']['id']
+                inDatabase = self.isAccountInDatabase(int(account_id))
+                if account_id not in accounts_reaching_user and not inDatabase:
+                    accounts_reaching_user.append(account_id)
             return accounts_reaching_user
         except Exception:
             return []
@@ -66,17 +67,11 @@ class Application:
         following_accounts = self.api.getFollowingAccounts()   
         for account_data in following_accounts:
             try:
-                self.database.insertData(int(account_data['id']), str(account_data['username']), False) 
+                account_id = int(account_data['id'])
+                username = str(account_data['username'])
+                self.database.insertData(account_id, username, False) 
             except Exception:
                 print("nothing")
     
     def closeApp(self):
         self.database.closeConnection()
-
-
-
-        
-
-
-    
-        

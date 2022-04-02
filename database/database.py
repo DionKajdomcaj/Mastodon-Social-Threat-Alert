@@ -1,5 +1,5 @@
 import sqlite3 as sql
-from traceback import print_tb
+
 
 class Database:
     def __init__(self):
@@ -47,7 +47,7 @@ class Database:
     def checkInstance(self, variable, v_type):
         return type(variable) == v_type
 
-    def insertData(self, account_id, username, threat ):
+    def insertData(self, account_id, username, threat):
         try:
             if(not self.checkInstance(account_id, int)):
                 raise Exception("Invalid type for account Id")
@@ -59,7 +59,8 @@ class Database:
                 raise Exception("Invalid type for threat")
 
             values = (account_id, username, threat)
-            execute_str = 'INSERT INTO HandledAccounts (id, username, threat) VALUES {}'.format(values)
+            execute_str = 'INSERT INTO HandledAccounts (id, username, threat)\
+                VALUES {}'.format(values)
             self.cursor.execute(execute_str)
             print("Data successfully inserted")
             return True
@@ -72,18 +73,10 @@ class Database:
         try:
             if(not self.checkInstance(account_id, int)):
                 raise Exception("Invalid type for account id")
-            execute_str = 'SELECT * FROM HandledAccounts WHERE id = {}'.format(account_id)
+            execute_str = 'SELECT * FROM HandledAccounts\
+                WHERE id = {}'.format(account_id)
             self.cursor.execute(execute_str)
             result = self.cursor.fetchall()
             return len(result) > 0
         except Exception:
             print('problem query')
-
-
-
-
-    
-
-
-
-        

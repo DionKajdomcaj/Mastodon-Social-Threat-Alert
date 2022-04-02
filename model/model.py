@@ -1,9 +1,9 @@
 
 import pandas as pd
-import numpy as np
 import pickle
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
+
 
 class Model:
 
@@ -17,21 +17,15 @@ class Model:
         self.y_test = None
         
     def train_model(self):
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split()
         pass
 
-    def test_model(self,test_data):
+    def test_model(self, test_data):
         pass
 
     def save_training(self):
-        with open("training.pickle","wb") as f:
+        with open("training.pickle", "wb"):
             pickle.dump(self.training)
     
     def load_model(self):
         with open("training.pickle", "wb") as f:
             self.training = pickle.load(f)
-
-        
-
-
-

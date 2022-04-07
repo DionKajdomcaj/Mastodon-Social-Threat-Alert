@@ -98,7 +98,7 @@ class LogIn(tk.Tk):
                                         text=text_running, 
                                         font=("Ariel", 20), bg='light blue')
         self.widgets['running'].add(self.running_label1)
-        
+
         self.empty_label4 = tk.Label(self, bg='light blue')
         self.widgets['running'].add(self.empty_label4)
 
@@ -156,8 +156,8 @@ class LogIn(tk.Tk):
                         account_name = account_data['username']
                         threat_data = threat_checked_account[1]
                         if threat_data:
-                            message = ("Account: " + account_name + 
-                                    " may be a threat!\nTake action!")
+                            message = ("Account: " + account_name 
+                                        + " may be a threat!\nTake action!")
                             showinfo(message=message)
 
                             self.done = False
@@ -224,7 +224,6 @@ class LogIn(tk.Tk):
 
         self.widgets['action'].add(self.action_button)
         self.action_button.pack()
-
 
     def stopApp(self):
         self.app.closeApp()

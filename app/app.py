@@ -1,7 +1,5 @@
-from dataclasses import dataclass
 from api.Mastodon_Api import Mastodon_Api
 from database.database import Database
-#from sklearn.linear_model import LinearRegression
 import pickle
 
 
@@ -66,7 +64,6 @@ class Application:
         if(action.lower() == 'block'):
             self.__api.blockAccount(account_data['id'])
             print("blocked")
-            self.__api._userApiInstance.account_unblock(account_data['id'])
         elif(action.lower() == 'report'):
             self.__api.reportAccount(account_data['id'])
         
@@ -90,12 +87,13 @@ class Application:
             accounts_reaching_user = []
             for notification in notifications:
                 account_id = notification['account']['id']
-                valid_notification = (notification['type'] == 'mention' or
-                                     notification['type'] == 'reblog')
+                valid_notification = (notification['type'] == 'mention' 
+                                        or notification['type'] == 'reblog')
+
                 inDatabase = self.isAccountInDatabase(int(account_id))
-                
-                if (account_id not in accounts_reaching_user and not inDatabase 
-                                                        and valid_notification):
+
+                if (account_id not in accounts_reaching_user and not inDatabase and 
+                                                                valid_notification):
                     accounts_reaching_user.append(account_id)
 
             return accounts_reaching_user

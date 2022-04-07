@@ -1,4 +1,3 @@
-from numpy import block
 from app.app import Application
 
 
@@ -23,6 +22,4 @@ class TestApplication:
 
         assert True == app.actionsForTheAccount(account_data, 'Trust')
         assert True == app.actionsForTheAccount(account_data, 'bLocK')
-        app.api.unblockAccount(108055689433205398)
-    
-        
+        app.api.unblockAccount(108055689433205398)        

@@ -44,8 +44,8 @@ jobs:
           name: check executables
           command: |    
             . venv/bin/activate
-            pyinstaller test.py -F
-            pyinstaller test.py -F --noconsole
+            pyinstaller ThreatAlert.py -F
+            pyinstaller ThreatAlert.py -F --noconsole
       
       # Step 4: Upload artifacts in dist:
       - store_artifacts:  

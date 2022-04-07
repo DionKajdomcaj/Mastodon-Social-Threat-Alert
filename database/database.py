@@ -34,8 +34,7 @@ class Database:
             return True
         except Exception:
             return False
-            
-    
+                
     def closeConnection(self):
         try:
             self.connection.commit()

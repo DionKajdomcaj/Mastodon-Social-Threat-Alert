@@ -33,8 +33,7 @@ class Database:
             print("Table dropped")
             return True
         except Exception:
-            print("ERROR")
-            return False
+            print("Error")
                 
     def closeConnection(self):
         try:

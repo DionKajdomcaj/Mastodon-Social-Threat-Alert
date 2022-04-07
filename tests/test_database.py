@@ -19,9 +19,6 @@ class TestDatabase:
 
         assert True == database.dropTable()
 
-        for _ in range(3):
-            assert False == database.dropTable()
-
     def testInsertData(self):
         database = Database()
         database.dropTable()

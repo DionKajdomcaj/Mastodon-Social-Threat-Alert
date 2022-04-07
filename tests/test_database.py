@@ -39,6 +39,8 @@ class TestDatabase:
         id = 1234123
         user = 'Dion'
         threat = False
+
+        assert True == database.checkInstance(threat, bool)
         database.insertData(id, user, threat)
 
         assert database.checkIfRecordExists(id) == True

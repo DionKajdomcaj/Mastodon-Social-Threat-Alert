@@ -26,8 +26,6 @@ class Application:
             self.api.setUpAccounts()
             self.api.loginAccount(self.__username, self.__password, self.user)
             self.api.createApiInstance()
-            self.__database.createTable()
-            self.trustFollowings()
             return True
         except Exception:
             return False
@@ -36,6 +34,7 @@ class Application:
         try:
             self.__database = Database()
             self.__database.createTable()
+            self.trustFollowings()
         except Exception:
             print("initializing database ERROR")
 

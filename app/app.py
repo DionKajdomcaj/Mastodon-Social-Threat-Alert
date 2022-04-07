@@ -6,7 +6,7 @@ import pickle
 class Application:
 
     def __init__(self, username, password, server, user=True):
-        self.__api = Mastodon_Api()
+        self.api = Mastodon_Api()
         self.__database = Database()
         self.__username = username
         self.__password = password
@@ -22,12 +22,16 @@ class Application:
         2022]
 
     def initApi(self):
-        self.__api.createApp(self.__server)
-        self.__api.setUpAccounts()
-        self.__api.loginAccount(self.__username, self.__password, self.user)
-        self.__api.createApiInstance()
-        self.__database.createTable()
-        self.trustFollowings()
+        try:
+            self.api.createApp(self.__server)
+            self.api.setUpAccounts()
+            self.api.loginAccount(self.__username, self.__password, self.user)
+            self.api.createApiInstance()
+            self.__database.createTable()
+            self.trustFollowings()
+            return True
+        except Exception:
+            return False
 
     def modelDecision(self, account_data):
         dataForModel = {}
@@ -56,16 +60,15 @@ class Application:
         return model_result
 
     def isItThreat(self, account_id):
-        account_data = self.__api.getAccountData(account_id)
+        account_data = self.api.getAccountData(account_id)
         threat = self.modelDecision(account_data)
         return (account_data, threat)
     
     def actionsForTheAccount(self, account_data, action, admin=False):
         if(action.lower() == 'block'):
-            self.__api.blockAccount(account_data['id'])
+            self.api.blockAccount(account_data['id'])
             print("blocked")
-        elif(action.lower() == 'report'):
-            self.__api.reportAccount(account_data['id'])
+        return True
         
     def isAccountInDatabase(self, account_id):
         try:
@@ -83,7 +86,7 @@ class Application:
 
     def startSession(self):
         try:
-            notifications = self.__api.getNotifications()
+            notifications = self.api.getNotifications()
             accounts_reaching_user = []
             for notification in notifications:
                 account_id = notification['account']['id']
@@ -101,7 +104,7 @@ class Application:
             return []
 
     def trustFollowings(self):
-        following_accounts = self.__api.getFollowingAccounts()   
+        following_accounts = self.api.getFollowingAccounts()   
         for account_data in following_accounts:
             try:
                 account_id = int(account_data['id'])

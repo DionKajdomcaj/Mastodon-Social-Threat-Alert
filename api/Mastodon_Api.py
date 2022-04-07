@@ -76,10 +76,11 @@ class Mastodon_Api:
 
     def blockAccount(self, account_id):
         self._userApiInstance.account_block(account_id)
+        return True
     
     def getFollowingAccounts(self):
         my_id = self._userApiInstance.me()['id']
         return self._userApiInstance.account_following(my_id)
     
-    def reportAccount(self, account_id):
-        self._userApiInstance.report(account_id)
+    def unblockAccount(self, account_id):
+        self._userApiInstance.account_unblock(account_id)

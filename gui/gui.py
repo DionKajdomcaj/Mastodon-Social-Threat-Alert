@@ -207,8 +207,7 @@ class LogIn(tk.Tk):
                             textvariable=self.string_var)
 
         self.action_combobox['values'] = ("Trust", 
-                                        "Block", 
-                                        "Report")
+                                        "Block")
         self.action_combobox.current(0)
         self.widgets['action'].add(self.action_combobox)
         self.action_combobox.pack()

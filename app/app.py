@@ -88,12 +88,12 @@ class Application:
             for notification in notifications:
                 account_id = notification['account']['id']
                 valid_notification = (notification['type'] == 'mention' 
-                                        or notification['type'] == 'reblog')
+                                    or notification['type'] == 'reblog')
 
                 inDatabase = self.isAccountInDatabase(int(account_id))
 
-                if (account_id not in accounts_reaching_user and not inDatabase and 
-                                                                valid_notification):
+                if (account_id not in accounts_reaching_user and not inDatabase 
+                                                        and valid_notification):
                     accounts_reaching_user.append(account_id)
 
             return accounts_reaching_user

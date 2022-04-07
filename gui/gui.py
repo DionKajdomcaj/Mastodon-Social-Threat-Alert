@@ -21,7 +21,7 @@ class LogIn(tk.Tk):
         
         self.title('Mastodon Threat Alert')
 
-        window_height = 500
+        window_height = 600
         window_width = 400
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -57,14 +57,14 @@ class LogIn(tk.Tk):
 
         self.widgets['main'].append(self.main_label3)
 
-        self.empty_label2 = tk.Label(self, bg='light blue')
-
         self.main_entry3 = tk.Entry(self)
         self.widgets['main'].append(self.main_entry3)
 
-        self.main_button1 = tk.Button(self, text='Start App', 
-                                    state='disabled', command=self.startApp)
+        self.empty_label2 = tk.Label(self, bg='light blue')
+        self.widgets['main'].append(self.empty_label2)
 
+        self.main_button1 = tk.Button(self, text='Start the application', 
+                                    state='disabled', command=self.startApp)
         self.widgets['main'].append(self.main_button1)
 
         self.welcome_label.pack()
@@ -81,13 +81,10 @@ class LogIn(tk.Tk):
         self.main_label3.pack()
         self.main_entry3.pack()
         self.main_entry3.bind('<KeyRelease>', self.getInput)
-
+        
+        self.empty_label2.pack()
+        
         self.main_button1.pack()
-
-        self.running_end = tk.Button(self, text="Stop the app", 
-                                    command=self.stopApp)
-
-        self.widgets['running'].add(self.running_end)
 
         self.img = Image.open('gui/images/bg2.png')
         self.resizable_img = self.img.resize((200, 250), Image.ANTIALIAS)
@@ -101,6 +98,13 @@ class LogIn(tk.Tk):
                                         text=text_running, 
                                         font=("Ariel", 20), bg='light blue')
         self.widgets['running'].add(self.running_label1)
+
+        self.empty_label4 = tk.Label(self, bg='light blue')
+        self.widgets['running'].add(self.empty_label4)
+
+        self.running_end = tk.Button(self, text="Exit the application", 
+                                    command=self.stopApp)
+        self.widgets['running'].add(self.running_end)
 
         self.geometry("{}x{}+{}+{}"
                     .format(window_width, window_height, x, y))
@@ -140,7 +144,7 @@ class LogIn(tk.Tk):
             try:
                 self.accounts_reaching_user = []
                 self.after(2400, self.sendRequest)
-                t_end = time.time() + 2.5
+                t_end = time.time() + 2.4
 
                 while time.time() <= t_end:
                     self.update()
@@ -149,33 +153,22 @@ class LogIn(tk.Tk):
                     for account in self.accounts_reaching_user:
                         threat_checked_account = self.app.isItThreat(account)
                         account_data = threat_checked_account[0]
+                        account_name = account_data['username']
                         threat_data = threat_checked_account[1]
                         if threat_data:
-                            message = 'You have a threat!\nTake action!'
+                            message = ("Account: " + account_name 
+                                        + " may be a threat!\nTake action!")
                             showinfo(message=message)
 
                             self.done = False
-                            self.string_var = tk.StringVar()
-                            self.action_combobox = Combobox(self, 
-                                                textvariable=self.string_var)
 
-                            self.action_combobox['values'] = ("Trust", 
-                                                            "Block", 
-                                                            "Report")
-
-                            self.widgets['action'].add(self.action_combobox)
-
-                            self.action_button = tk.Button(self, 
-                                    text='Take action', 
-                                    command=lambda:
-                                    self.takeAction(account_data, threat_data))
-
-                            self.widgets['action'].add(self.action_button)
-
-                            self.cleanRunning()
+                            self.cleanRunning() 
+                            self.createAction(account_data, threat_data)
+                            
                             while not self.done:
                                 self.update()
-                                print('not done')
+                                if self.done:
+                                    break
                             self.cleanAction()
                         self.app.insertAccountInDatabase(account_data, 
                                                         threat_data)
@@ -196,18 +189,40 @@ class LogIn(tk.Tk):
     def cleanRunning(self):
         for widget in self.widgets['running']:
             widget.pack_forget()
-        for widget in self.widgets['action']:
-            widget.pack()
         
     def cleanAction(self):
         for widget in self.widgets['action']:
-            widget.pack_forget()
+            widget.destroy()
+        self.widgets['action'].clear()
         for widget in self.widgets['running']:
             widget.pack()
 
     def sendRequest(self):
         self.accounts_reaching_user = self.app.startSession()
         print(self.accounts_reaching_user)
+
+    def createAction(self, account_data, threat_data):
+        self.string_var = tk.StringVar()
+        self.action_combobox = Combobox(self, 
+                            textvariable=self.string_var)
+
+        self.action_combobox['values'] = ("Trust", 
+                                        "Block")
+        self.action_combobox.current(0)
+        self.widgets['action'].add(self.action_combobox)
+        self.action_combobox.pack()
+
+        self.empty_label3 = tk.Label(self, bg='light blue')
+        self.widgets['action'].add(self.empty_label3)
+        self.empty_label3.pack()
+
+        self.action_button = tk.Button(self, 
+                            text='Take action', 
+                            command=lambda:
+                            self.takeAction(account_data, threat_data))
+
+        self.widgets['action'].add(self.action_button)
+        self.action_button.pack()
 
     def stopApp(self):
         self.app.closeApp()

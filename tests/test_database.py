@@ -1,27 +1,23 @@
 from database.database import Database
-from sys import path
-path.append("/MASTODON-SOCIAL-THREAT-ALERT/database/")
 
 
-class DatabaseTests:
+class TestDatabase:
+
     def testCreatingDatabase(self):
         database = Database()
         database.dropTable()
         
         assert True == database.createTable()
 
-        for iter in range(3):
+        for _ in range(3):
             assert False == database.createTable()
-    
+            
     def testDropTable(self):
         database = Database()
         database.dropTable()
         database.createTable()
 
         assert True == database.dropTable()
-
-        for iter in range(3):
-            assert False == database.dropTable()
 
     def testInsertData(self):
         database = Database()
@@ -43,6 +39,8 @@ class DatabaseTests:
         id = 1234123
         user = 'Dion'
         threat = False
+
+        assert True == database.checkInstance(threat, bool)
         database.insertData(id, user, threat)
 
         assert database.checkIfRecordExists(id) == True
@@ -59,5 +57,5 @@ class DatabaseTests:
 
         assert True == database.closeConnection()
 
-        for iter in range(3):
+        for _ in range(3):
             assert False == database.closeConnection()

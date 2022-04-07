@@ -31,8 +31,10 @@ class Database:
                 DROP TABLE IF EXISTS HandledAccounts;
             ''')
             print("Table dropped")
+            return True
         except Exception:
             print("Table not dropped ERROR")
+            return False
     
     def closeConnection(self):
         try:

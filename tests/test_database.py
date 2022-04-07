@@ -2,6 +2,7 @@ from database.database import Database
 
 
 class DatabaseTests:
+    
     def testCreatingDatabase(self):
         database = Database()
         database.dropTable()

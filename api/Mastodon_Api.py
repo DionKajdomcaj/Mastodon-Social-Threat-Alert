@@ -67,6 +67,7 @@ class Mastodon_Api:
 
     def clearNotifications(self):
         self._userApiInstance.notifications_clear()
+        return True
 
     def getAccountData(self, account_id, admin=False):
         if not admin:
@@ -76,6 +77,7 @@ class Mastodon_Api:
 
     def blockAccount(self, account_id):
         self._userApiInstance.account_block(account_id)
+        print("done")
         return True
     
     def getFollowingAccounts(self):

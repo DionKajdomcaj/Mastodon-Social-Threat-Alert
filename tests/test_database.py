@@ -5,24 +5,24 @@ class TestDatabase:
 
     def testCreatingDatabase(self):
         database = Database()
-        database.dropTable("TestTable")
+        database.dropTable()
         
-        assert True == database.createTable("TestTable")
+        assert True == database.createTable()
 
         for _ in range(3):
-            assert False == database.createTable("TestTable")
+            assert False == database.createTable()
             
     def testDropTable(self):
         database = Database()
         database.dropTable()
-        database.createTable("TestTable")
+        database.createTable()
 
-        assert True == database.dropTable("TestTable")
+        assert True == database.dropTable()
 
     def testInsertData(self):
         database = Database()
         database.dropTable()
-        database.createTable("TestTable")
+        database.createTable()
 
         id = 1234123
         user = 'Dion'
@@ -31,8 +31,8 @@ class TestDatabase:
 
     def testCheckRecordExistence(self):
         database = Database()
-        database.dropTable("TestTable")
-        database.createTable("TestTable")
+        database.dropTable()
+        database.createTable()
 
         assert False == database.checkIfRecordExists(51123)
 
@@ -47,8 +47,8 @@ class TestDatabase:
 
     def testCloseConnection(self):
         database = Database()
-        database.dropTable("TestTable")
-        database.createTable("TestTable")
+        database.dropTable()
+        database.createTable()
 
         id = 1234123
         user = 'Dion'

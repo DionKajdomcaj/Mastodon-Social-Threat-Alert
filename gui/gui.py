@@ -114,6 +114,7 @@ class LogIn(tk.Tk):
         try:
             self.app = Application(self.username, self.password, self.server)
             self.app.initApi()
+            self.app.initDatabase()
             self.runningScreen()
             self.protocol('WM_DELETE_WINDOW', self.stopApp)
             self.callSession()

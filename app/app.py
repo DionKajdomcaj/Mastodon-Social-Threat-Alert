@@ -7,7 +7,6 @@ class Application:
 
     def __init__(self, username, password, server, user=True):
         self.api = Mastodon_Api()
-        self.__database = Database()
         self.__username = username
         self.__password = password
         self.__server = server
@@ -32,6 +31,13 @@ class Application:
             return True
         except Exception:
             return False
+    
+    def initDatabase(self):
+        try:
+            self.__database = Database()
+            self.__database.createTable()
+        except Exception:
+            print("initializing database ERROR")
 
     def modelDecision(self, account_data):
         dataForModel = {}

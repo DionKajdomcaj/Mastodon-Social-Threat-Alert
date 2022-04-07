@@ -51,20 +51,3 @@ jobs:
       # Step 4: Upload artifacts in dist:
       - store_artifacts:  
           path: dist
-workflows:
-  version: 2
-  main:
-    jobs:
-      - build:
-          filters:
-            tags:
-              only: /^\d+\.\d+\.\d+$/
-      - publish-github-release:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - main
-            tags:
-              only: /^\d+\.\d+\.\d+$/

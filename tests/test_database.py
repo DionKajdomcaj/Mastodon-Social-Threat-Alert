@@ -1,8 +1,8 @@
 from database.database import Database
 
 
-class DatabaseTests:
-    
+class TestDatabase:
+
     def testCreatingDatabase(self):
         database = Database()
         database.dropTable()

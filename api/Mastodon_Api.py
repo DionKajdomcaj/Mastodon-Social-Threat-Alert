@@ -83,19 +83,3 @@ class Mastodon_Api:
     
     def reportAccount(self, account_id):
         self._userApiInstance.report(account_id)
-
-
-
-    
-        
-
-
-        
-
-
-    
-
-
-
-
-        

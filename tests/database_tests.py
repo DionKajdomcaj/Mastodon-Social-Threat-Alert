@@ -8,7 +8,7 @@ class DatabaseTests:
         
         assert True == database.createTable()
 
-        for iter in range(3):
+        for _ in range(3):
             assert False == database.createTable()
     
     def testDropTable(self):
@@ -18,7 +18,7 @@ class DatabaseTests:
 
         assert True == database.dropTable()
 
-        for iter in range(3):
+        for _ in range(3):
             assert False == database.dropTable()
 
     def testInsertData(self):
@@ -57,5 +57,5 @@ class DatabaseTests:
 
         assert True == database.closeConnection()
 
-        for iter in range(3):
+        for _ in range(3):
             assert False == database.closeConnection()

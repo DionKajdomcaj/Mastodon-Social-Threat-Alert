@@ -5,14 +5,14 @@ class Database:
     def __init__(self):
         try:
             self.connection = sql.connect("MSTAdatabase.db")
-            self.cursor = self.connection.cursor()
+            self.__cursor = self.connection.cursor()
             print("Successful Connection")
         except Exception:
             print("Database connection was unsuccessful")
     
     def createTable(self):
         try:
-            self.cursor.execute('''
+            self.__cursor.execute('''
             CREATE TABLE HandledAccounts (
                 ID INTEGER PRIMARY KEY,
                 USERNAME TEXT,
@@ -27,7 +27,7 @@ class Database:
 
     def dropTable(self):
         try:
-            self.cursor.execute('''
+            self.__cursor.execute('''
                 DROP TABLE IF EXISTS HandledAccounts;
             ''')
             print("Table dropped")
@@ -61,7 +61,7 @@ class Database:
             values = (account_id, username, threat)
             execute_str = 'INSERT INTO HandledAccounts (id, username, threat)\
                 VALUES {}'.format(values)
-            self.cursor.execute(execute_str)
+            self.__cursor.execute(execute_str)
             print("Data successfully inserted")
             return True
 
@@ -75,8 +75,8 @@ class Database:
                 raise Exception("Invalid type for account id")
             execute_str = 'SELECT * FROM HandledAccounts\
                 WHERE id = {}'.format(account_id)
-            self.cursor.execute(execute_str)
-            result = self.cursor.fetchall()
+            self.__cursor.execute(execute_str)
+            result = self.__cursor.fetchall()
             return len(result) > 0
         except Exception:
             print('problem query')

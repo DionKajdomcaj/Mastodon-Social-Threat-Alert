@@ -156,8 +156,10 @@ class LogIn(tk.Tk):
                         account_data = threat_checked_account[0]
                         account_name = account_data['username']
                         threat_data = threat_checked_account[1]
+                        domain = account_data['url'].split('/')[2]
                         if threat_data:
-                            message = ("Account: " + account_name 
+                            message = ("Account: " + account_name
+                                        + " from domain: " + domain 
                                         + " may be a threat!\nTake action!")
                             showinfo(message=message)
 
@@ -184,7 +186,9 @@ class LogIn(tk.Tk):
 
     def takeAction(self, account_data, threat_data):
         action = self.action_combobox.get()
+        domain_action = self.domain_combobox.get()
         self.app.actionsForTheAccount(account_data, action, threat_data)
+        self.app.actionsForTheDomain(account_data, domain_action)
         self.done = True
         
     def cleanRunning(self):
@@ -203,6 +207,12 @@ class LogIn(tk.Tk):
         print(self.accounts_reaching_user)
 
     def createAction(self, account_data, threat_data):
+        self.canvas.pack_forget()
+        self.action_label1 = tk.Label(self, text="Account Action", 
+                                    font=('Ariel', 14), bg='light blue')
+        self.widgets['action'].add(self.action_label1)
+        self.action_label1.pack()
+
         self.string_var = tk.StringVar()
         self.action_combobox = Combobox(self, 
                             textvariable=self.string_var)
@@ -212,6 +222,22 @@ class LogIn(tk.Tk):
         self.action_combobox.current(0)
         self.widgets['action'].add(self.action_combobox)
         self.action_combobox.pack()
+
+        self.action_label2 = tk.Label(self, text="Domain Action", 
+                                font=('Ariel', 14), bg='light blue')
+
+        self.widgets['action'].add(self.action_label2)
+        self.action_label2.pack()
+
+
+        self.string_var2 = tk.StringVar()
+        self.domain_combobox = Combobox(self, 
+                            textvariable=self.string_var)
+        self.domain_combobox['values'] = ("Trust", 
+                                        "Block")
+        self.domain_combobox.current(0)
+        self.widgets['action'].add(self.domain_combobox)
+        self.domain_combobox.pack()
 
         self.empty_label3 = tk.Label(self, bg='light blue')
         self.widgets['action'].add(self.empty_label3)
@@ -224,6 +250,7 @@ class LogIn(tk.Tk):
 
         self.widgets['action'].add(self.action_button)
         self.action_button.pack()
+        self.canvas.pack()
 
     def stopApp(self):
         self.app.closeApp()

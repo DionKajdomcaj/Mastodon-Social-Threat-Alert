@@ -33,7 +33,8 @@ class Application:
     def initDatabase(self):
         try:
             self.__database = Database()
-            self.__database.createTable()
+            self.__database.createTableAccounts()
+            self.__database.createTableDomain()
             self.trustFollowings()
         except Exception:
             print("initializing database ERROR")
@@ -74,6 +75,17 @@ class Application:
             self.api.blockAccount(account_data['id'])
             print("blocked")
         return True
+    
+    def actionsForTheDomain(self, accound_data, action):
+        domain = str(accound_data['url'].split('/')[2])
+        if(action.lower() == 'block'):
+            domain = accound_data['url'].split('/')[2]
+            self.api.blockDomain(domain, True)
+            self.__database.insertDomain(domain, True)
+            print("blocked")
+        else:
+            self.__database.insertDomain(domain, False)
+        return True
         
     def isAccountInDatabase(self, account_id):
         try:
@@ -85,7 +97,15 @@ class Application:
         try:
             id = int(account_data['id'])
             username = account_data['username']
-            self.__database.insertData(id, username, threat)
+            domain = account_data['url'].split('/')[2]
+            self.__database.insertAccount(id, username, domain, threat)
+        except Exception:
+            print("DIDNT INSERT DATA. ERROR")
+    
+    def insertDomainInDatabase(self, account_data, blocked):
+        try:
+            domain = account_data['url'].split('/')[2]
+            self.__database.insertDomain(domain, blocked)
         except Exception:
             print("DIDNT INSERT DATA. ERROR")
 
@@ -114,7 +134,9 @@ class Application:
             try:
                 account_id = int(account_data['id'])
                 username = str(account_data['username'])
-                self.__database.insertData(account_id, username, False) 
+                domain = str(account_data['url'].split('/')[2])
+                self.__database.insertAccount(account_id, username, domain, False)
+                self.__database.insertDomain(domain, False)
             except Exception:
                 print("nothing")
     

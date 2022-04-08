@@ -30,4 +30,10 @@ class TestAPI:
         app = Application('kajdo', 'dinoni12', 'mastodon.elte.hu')
         app.initApi()
         assert True == app.api.blockAccount(108092223200935880)
-        app.api.unblockAccount(108092223200935880)
+        assert True == app.api.unblockAccount(108092223200935880)
+    
+    def testBlockDomain(self):
+        app = Application('kajdo', 'dinoni12', 'mastodon.elte.hu')
+        app.initApi()
+        assert True == app.api.blockDomain('fosstodon.org')
+        assert True == app.api.unblockDomain('fosstodon.org')

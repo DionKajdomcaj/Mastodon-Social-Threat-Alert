@@ -10,12 +10,13 @@ class Database:
         except Exception:
             print("Database connection was unsuccessful")
     
-    def createTable(self):
+    def createTableAccounts(self):
         try:
             self.cursor.execute('''
             CREATE TABLE HandledAccounts (
                 ID INTEGER PRIMARY KEY,
                 USERNAME TEXT,
+                DOMAIN TEXT,
                 THREAT BOOL
             );
             ''')
@@ -25,7 +26,21 @@ class Database:
             print("FAILED TO CREATE THE TABLE")
             return False
 
-    def dropTable(self):
+    def createTableDomain(self):
+        try:
+            self.cursor.execute('''
+            CREATE TABLE HandledDomains (
+                DOMAIN TEXT PRIMARY KEY,
+                BLOCKED BOOL
+            );
+            ''')
+            print("SUCCESSFULLY CREATED THE TABLE")
+            return True
+        except Exception:
+            print("FAILED TO CREATE THE TABLE")
+            return False
+        
+    def dropAccountTable(self):
         try:
             self.cursor.execute('''
                 DROP TABLE IF EXISTS HandledAccounts;
@@ -35,6 +50,16 @@ class Database:
         except Exception:
             print("Table not dropped ERROR")
     
+    def dropDomainTable(self):
+        try:
+            self.cursor.execute('''
+                DROP TABLE IF EXISTS HandledDomains;
+            ''')
+            print("Table dropped")
+            return True
+        except Exception:
+            print("Table not dropped ERROR")
+
     def closeConnection(self):
         try:
             self.connection.commit()
@@ -48,7 +73,7 @@ class Database:
     def checkInstance(self, variable, v_type):
         return type(variable) == v_type
 
-    def insertData(self, account_id, username, threat):
+    def insertAccount(self, account_id, username, domain, threat):
         try:
             if(not self.checkInstance(account_id, int)):
                 raise Exception("Invalid type for account Id")
@@ -59,13 +84,33 @@ class Database:
             if(not self.checkInstance(threat, bool)):
                 raise Exception("Invalid type for threat")
 
-            values = (account_id, username, threat)
-            execute_str = 'INSERT INTO HandledAccounts (id, username, threat)\
+            if(not self.checkInstance(domain, str)):
+                raise Exception("Invalid type for Username")
+
+            values = (account_id, username, domain, threat)
+            execute_str = 'INSERT INTO HandledAccounts (id, username, domain, threat)\
                 VALUES {}'.format(values)
             self.cursor.execute(execute_str)
             print("Data successfully inserted")
             return True
 
+        except Exception:
+            print("SDi")
+            return False
+
+    def insertDomain(self, domain, blocked):
+        try:
+            if(not self.checkInstance(domain, str)):
+                raise Exception("Invalid type for Domain")
+            if(not self.checkInstance(blocked, bool)):
+                raise Exception("Invalid type for Blocked")
+
+            values = (domain, blocked)
+            execute_str = 'INSERT INTO HandledDomains (domain, blocked)\
+                VALUES {}'.format(values)
+            self.cursor.execute(execute_str)
+            print("Data successfully inserted")
+            return True
         except Exception:
             print("SDi")
             return False

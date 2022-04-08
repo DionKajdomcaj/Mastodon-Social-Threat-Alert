@@ -229,7 +229,6 @@ class LogIn(tk.Tk):
         self.widgets['action'].add(self.action_label2)
         self.action_label2.pack()
 
-
         self.string_var2 = tk.StringVar()
         self.domain_combobox = Combobox(self, 
                             textvariable=self.string_var)

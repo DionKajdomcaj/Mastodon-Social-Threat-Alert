@@ -94,6 +94,3 @@ class TestDatabase:
         database.createTableDomain()
 
         assert True == database.dropDomainTable()
-
-    
-

@@ -21,13 +21,12 @@ class Application:
         2022]
 
     def initApi(self):
-            self.api.createApp(self.__server)
-            self.api.setUpAccounts()
-            self.api.loginAccount(self.__username, self.__password, self.user)
-            self.api.createApiInstance()
-            return True
+        self.api.createApp(self.__server)
+        self.api.setUpAccounts()
+        self.api.loginAccount(self.__username, self.__password, self.user)
+        self.api.createApiInstance()
+        return True
 
-    
     def initDatabase(self):
         try:
             self.__database = Database()

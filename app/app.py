@@ -21,14 +21,12 @@ class Application:
         2022]
 
     def initApi(self):
-        try:
             self.api.createApp(self.__server)
             self.api.setUpAccounts()
             self.api.loginAccount(self.__username, self.__password, self.user)
             self.api.createApiInstance()
             return True
-        except Exception:
-            return False
+
     
     def initDatabase(self):
         try:
@@ -63,6 +61,7 @@ class Application:
                     data.append(0)
 
         model_result = bool(self.model.predict([data])[0])
+        print(model_result)
         return model_result
 
     def isItThreat(self, account_id):

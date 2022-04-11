@@ -159,8 +159,8 @@ class LogIn(tk.Tk):
                         domain = account_data['url'].split('/')[2]
                         if threat_data:
                             message = ("Account: " + account_name
-                                        + " from domain: " + domain 
-                                        + " may be a threat!\nTake action!")
+                                        + "\nFrom domain: " + domain 
+                                        + "\nMay be a threat!\nTake action!")
                             showinfo(message=message)
 
                             self.done = False
@@ -170,6 +170,7 @@ class LogIn(tk.Tk):
                             
                             while not self.done:
                                 self.update()
+                                print("not done")
                                 if self.done:
                                     break
                             self.cleanAction()

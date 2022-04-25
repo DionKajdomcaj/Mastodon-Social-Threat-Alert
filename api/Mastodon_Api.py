@@ -86,3 +86,20 @@ class Mastodon_Api:
     
     def unblockAccount(self, account_id):
         self._userApiInstance.account_unblock(account_id)
+        return True
+
+    def blockDomain(self, domain):
+        self._userApiInstance.domain_block(domain)
+        return True
+    
+    def unblockDomain(self, domain):
+        self._userApiInstance.domain_unblock(domain)
+        return True
+    
+    def muteAccount(self, account_id):
+        self._userApiInstance.account_mute(account_id)
+        return True
+    
+    def unmuteAccount(self, account_id):
+        self._userApiInstance.account_unmute(account_id)
+        return True

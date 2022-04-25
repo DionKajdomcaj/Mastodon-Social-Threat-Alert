@@ -1,5 +1,6 @@
 from api.Mastodon_Api import Mastodon_Api
 from database.database import Database
+from tkinter.messagebox import showinfo
 import pickle
 
 
@@ -21,19 +22,17 @@ class Application:
         2022]
 
     def initApi(self):
-        try:
-            self.api.createApp(self.__server)
-            self.api.setUpAccounts()
-            self.api.loginAccount(self.__username, self.__password, self.user)
-            self.api.createApiInstance()
-            return True
-        except Exception:
-            return False
-    
+        self.api.createApp(self.__server)
+        self.api.setUpAccounts()
+        self.api.loginAccount(self.__username, self.__password, self.user)
+        self.api.createApiInstance()
+        return True
+
     def initDatabase(self):
         try:
             self.__database = Database()
-            self.__database.createTable()
+            self.__database.createTableAccounts()
+            self.__database.createTableDomain()
             self.trustFollowings()
         except Exception:
             print("initializing database ERROR")
@@ -43,7 +42,7 @@ class Application:
         dataForModel['followers'] = int(account_data['followers_count'])
         dataForModel['followings'] = int(account_data['following_count'])
         dataForModel['statuses'] = account_data['statuses_count']
-        dataForModel['profile'] = 1 if 'missing' in account_data['avatar'].split('/') else 0
+        dataForModel['profile'] = 1 if 'missing' not in account_data['avatar'].split('/') else 0
         dataForModel['server'] = account_data['url'].split('/')[2]
         dataForModel['dateOfCreation'] = int(str(account_data['created_at']).split('-')[0])
         data = []
@@ -62,6 +61,7 @@ class Application:
                     data.append(0)
 
         model_result = bool(self.model.predict([data])[0])
+        print(model_result)
         return model_result
 
     def isItThreat(self, account_id):
@@ -73,6 +73,21 @@ class Application:
         if(action.lower() == 'block'):
             self.api.blockAccount(account_data['id'])
             print("blocked")
+        if(action.lower() == 'mute'):
+            self.api.muteAccount(account_data['id'])
+            print('Muted')
+        showinfo(message="Action was completed successfully")  
+        return True
+    
+    def actionsForTheDomain(self, accound_data, action):
+        domain = str(accound_data['url'].split('/')[2])
+        if(action.lower() == 'block'):
+            domain = accound_data['url'].split('/')[2]
+            self.api.blockDomain(domain, True)
+            self.__database.insertDomain(domain, True)
+            print("blocked")
+        else:
+            self.__database.insertDomain(domain, False)
         return True
         
     def isAccountInDatabase(self, account_id):
@@ -85,7 +100,15 @@ class Application:
         try:
             id = int(account_data['id'])
             username = account_data['username']
-            self.__database.insertData(id, username, threat)
+            domain = account_data['url'].split('/')[2]
+            self.__database.insertAccount(id, username, domain, threat)
+        except Exception:
+            print("DIDNT INSERT DATA. ERROR")
+    
+    def insertDomainInDatabase(self, account_data, blocked):
+        try:
+            domain = account_data['url'].split('/')[2]
+            self.__database.insertDomain(domain, blocked)
         except Exception:
             print("DIDNT INSERT DATA. ERROR")
 
@@ -114,7 +137,9 @@ class Application:
             try:
                 account_id = int(account_data['id'])
                 username = str(account_data['username'])
-                self.__database.insertData(account_id, username, False) 
+                domain = str(account_data['url'].split('/')[2])
+                self.__database.insertAccount(account_id, username, domain, False)
+                self.__database.insertDomain(domain, False)
             except Exception:
                 print("nothing")
     

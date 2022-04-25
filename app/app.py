@@ -1,4 +1,3 @@
-from pyexpat import model
 from api.Mastodon_Api import Mastodon_Api
 from database.database import Database
 from tkinter.messagebox import showinfo

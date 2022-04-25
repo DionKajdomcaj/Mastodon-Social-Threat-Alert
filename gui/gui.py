@@ -170,7 +170,6 @@ class LogIn(tk.Tk):
                             
                             while not self.done:
                                 self.update()
-                                #print("not done")
                                 if self.done:
                                     break
                             self.cleanAction()

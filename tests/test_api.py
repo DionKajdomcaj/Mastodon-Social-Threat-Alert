@@ -37,3 +37,8 @@ class TestAPI:
         app.initApi()
         assert True == app.api.blockDomain('fosstodon.org')
         assert True == app.api.unblockDomain('fosstodon.org')
+    
+    def testMuteAccount(self):
+        app = Application('kajdo', 'dinoni12', 'mastodon.elte.hu')
+        app.initApi()
+        assert True == app.api.muteAccount(108055689433205398)

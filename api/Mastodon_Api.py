@@ -99,3 +99,4 @@ class Mastodon_Api:
     def muteAccount(self, account_id):
         self._userApiInstance.account_mute(account_id)
         self._userApiInstance.account_unmute(account_id)
+        return True

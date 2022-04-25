@@ -42,3 +42,4 @@ class TestAPI:
         app = Application('kajdo', 'dinoni12', 'mastodon.elte.hu')
         app.initApi()
         assert True == app.api.muteAccount(108055689433205398)
+        assert True == app.api.unmuteAccount(108055689433205398)

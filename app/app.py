@@ -1,5 +1,7 @@
+from pyexpat import model
 from api.Mastodon_Api import Mastodon_Api
 from database.database import Database
+from tkinter.messagebox import showinfo
 import pickle
 
 
@@ -41,7 +43,7 @@ class Application:
         dataForModel['followers'] = int(account_data['followers_count'])
         dataForModel['followings'] = int(account_data['following_count'])
         dataForModel['statuses'] = account_data['statuses_count']
-        dataForModel['profile'] = 1 if 'missing' in account_data['avatar'].split('/') else 0
+        dataForModel['profile'] = 1 if 'missing' not in account_data['avatar'].split('/') else 0
         dataForModel['server'] = account_data['url'].split('/')[2]
         dataForModel['dateOfCreation'] = int(str(account_data['created_at']).split('-')[0])
         data = []
@@ -72,6 +74,10 @@ class Application:
         if(action.lower() == 'block'):
             self.api.blockAccount(account_data['id'])
             print("blocked")
+        if(action.lower() == 'mute'):
+            self.api.muteAccount(account_data['id'])
+            print('Muted')
+        showinfo(message="Action was completed successfully")  
         return True
     
     def actionsForTheDomain(self, accound_data, action):

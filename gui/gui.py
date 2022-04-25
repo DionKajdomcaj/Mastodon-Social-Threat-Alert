@@ -170,7 +170,7 @@ class LogIn(tk.Tk):
                             
                             while not self.done:
                                 self.update()
-                                print("not done")
+                                #print("not done")
                                 if self.done:
                                     break
                             self.cleanAction()
@@ -219,7 +219,8 @@ class LogIn(tk.Tk):
                             textvariable=self.string_var)
 
         self.action_combobox['values'] = ("Trust", 
-                                        "Block")
+                                        "Block",
+                                        "Mute")
         self.action_combobox.current(0)
         self.widgets['action'].add(self.action_combobox)
         self.action_combobox.pack()
@@ -232,7 +233,7 @@ class LogIn(tk.Tk):
 
         self.string_var2 = tk.StringVar()
         self.domain_combobox = Combobox(self, 
-                            textvariable=self.string_var)
+                            textvariable=self.string_var2)
         self.domain_combobox['values'] = ("Trust", 
                                         "Block")
         self.domain_combobox.current(0)

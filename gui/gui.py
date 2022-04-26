@@ -18,6 +18,7 @@ class LogIn(tk.Tk):
         self.server = ''
         self.action = ''
         self.widgets = {'main': [], 'running': set([]), 'action': set([])}
+        self.done_init = False
         
         self.title('Mastodon Threat Alert')
 
@@ -110,16 +111,27 @@ class LogIn(tk.Tk):
                     .format(window_width, window_height, x, y))
         self.resizable(0, 0)
 
-    def startApp(self):
+    def initAppReq(self):
         try:
             self.app = Application(self.username, self.password, self.server)
             self.app.initApi()
             self.app.initDatabase()
-            self.runningScreen()
-            self.protocol('WM_DELETE_WINDOW', self.stopApp)
-            self.callSession()
+            self.done_init = True
         except Exception:
             showerror(message="Invalid credentials for mastodon account")
+
+
+    def startApp(self):
+        self.after(0, self.initAppReq)
+        while not self.done_init:
+            self.update()
+            if self.done_init:
+                break
+        self.update()
+        self.runningScreen()
+        self.protocol('WM_DELETE_WINDOW', self.stopApp)
+        self.callSession()
+        
     
     def getInput(self, event):
         print(event)

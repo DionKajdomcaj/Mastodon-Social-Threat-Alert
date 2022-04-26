@@ -120,7 +120,6 @@ class LogIn(tk.Tk):
         except Exception:
             showerror(message="Invalid credentials for mastodon account")
 
-
     def startApp(self):
         self.after(0, self.initAppReq)
         while not self.done_init:
@@ -132,7 +131,6 @@ class LogIn(tk.Tk):
         self.protocol('WM_DELETE_WINDOW', self.stopApp)
         self.callSession()
         
-    
     def getInput(self, event):
         print(event)
         self.username = self.main_entry1.get()

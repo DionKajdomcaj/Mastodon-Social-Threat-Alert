@@ -113,7 +113,7 @@ class LogIn(tk.Tk):
 
     def initAppReq(self):
         try:
-            self.protocol('WM_DELETE_WINDOW', func=lambda:os._exit(0))
+            self.protocol('WM_DELETE_WINDOW', func=lambda: os._exit(0))
             self.app = Application(self.username, self.password, self.server)
             self.app.initApi()
             self.app.initDatabase()

@@ -118,7 +118,7 @@ class LogIn(tk.Tk):
             self.app.initApi()
             self.app.initDatabase()
             self.done_init = True
-        except:
+        except Exception:
             if('elte.hu' not in self.server and '@' not in self.username):
                 showerror(message="You should enter your email "
                                             + "instead of your username "

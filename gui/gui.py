@@ -120,10 +120,10 @@ class LogIn(tk.Tk):
             self.done_init = True
         except:
             if('elte.hu' not in self.server and '@' not in self.username):
-                showerror(message="You should enter your email " +
-                                            "instead of your username " +
-                                            "since the server is not " +
-                                            "mastodon.elte.hu")
+                showerror(message="You should enter your email "
+                                            + "instead of your username "
+                                            + "since the server is not "
+                                            + "mastodon.elte.hu")
             else:
                 showerror(message="Invalid credentials for mastodon account")
 

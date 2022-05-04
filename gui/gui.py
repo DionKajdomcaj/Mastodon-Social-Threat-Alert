@@ -113,35 +113,41 @@ class LogIn(tk.Tk):
 
     def initAppReq(self):
         try:
+            self.protocol('WM_DELETE_WINDOW', func=lambda:os._exit(0))
             self.app = Application(self.username, self.password, self.server)
             self.app.initApi()
             self.app.initDatabase()
             self.done_init = True
-        except Exception:
-            showerror(message="Invalid credentials for mastodon account")
+        except:
+            if('elte.hu' not in self.server and '@' not in self.username):
+                showerror(message="You should enter your email " +
+                                            "instead of your username " +
+                                            "since the server is not " +
+                                            "mastodon.elte.hu")
+            else:
+                showerror(message="Invalid credentials for mastodon account")
 
     def startApp(self):
+        self.update()
         self.after(0, self.initAppReq)
         while not self.done_init:
             self.update()
             if self.done_init:
                 break
+            self.update()
         self.update()
+        showinfo(message="You are now logged in")
         self.runningScreen()
         self.protocol('WM_DELETE_WINDOW', self.stopApp)
         self.callSession()
         
     def getInput(self, event):
-        print(event)
         self.username = self.main_entry1.get()
         self.password = self.main_entry2.get()
         self.server = self.main_entry3.get()
         if self.username == '' or self.password == '' or self.server == '':
             self.main_button1['state'] = tk.DISABLED
         else:
-            print(self.username)
-            print(self.password)
-            print(self.server)
             self.main_button1['state'] = tk.NORMAL
     
     def getActionInput(self):
@@ -155,13 +161,14 @@ class LogIn(tk.Tk):
             try:
                 self.accounts_reaching_user = []
                 self.after(2400, self.sendRequest)
-                t_end = time.time() + 2.4
+                t_end = time.time() + 2.6
 
                 while time.time() <= t_end:
                     self.update()
 
                 if len(self.accounts_reaching_user) > 0:
                     for account in self.accounts_reaching_user:
+                        self.update()
                         threat_checked_account = self.app.isItThreat(account)
                         account_data = threat_checked_account[0]
                         account_name = account_data['username']

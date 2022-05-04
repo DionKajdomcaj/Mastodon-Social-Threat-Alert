@@ -5,9 +5,7 @@ class Mastodon_Api:
 
     def __init__(self):
         self._user = Mastodon()
-        self._admin = Mastodon()
         self._userApiInstance = Mastodon()
-        self._adminApiInstance = Mastodon()
         self._mastodonServer = ""
 
     def createApp(self, mastodon_server):
@@ -16,26 +14,17 @@ class Mastodon_Api:
         else:
             self._mastodonServer = mastodon_server
 
+        print(self._mastodonServer)
+
         Mastodon.create_app(
             "mastodonApiAppUser",
             api_base_url=self._mastodonServer,
             to_file='app/secretFolder/mastodonApiAppUser.secret'
-        )  
-
-        Mastodon.create_app(
-            "mastodonApiAppAdmin",
-            api_base_url=self._mastodonServer,
-            to_file="app/secretFolder/mastodonApiAppAdmin.secret"
-        )  
+        )
 
     def setUpAccounts(self):
         self._user = Mastodon(
             client_id='app/secretFolder/mastodonApiAppUser.secret',
-            api_base_url=self._mastodonServer
-        )
-
-        self._admin = Mastodon(
-            client_id='app/secretFolder/mastodonApiAppAdmin.secret',
             api_base_url=self._mastodonServer
         )
         
@@ -46,12 +35,6 @@ class Mastodon_Api:
                 password,
                 to_file='app/secretFolder/usercredentials.secret' 
             )
-        else:
-            self._admin.log_in(
-                username,
-                password,
-                to_file='app/secretFolder/admincredentials.secret'
-            )
     
     def createApiInstance(self):
         self._userApiInstance = Mastodon(
@@ -60,7 +43,7 @@ class Mastodon_Api:
         )
 
     def getNotifications(self):
-        return self._userApiInstance.notifications()
+        return self._userApiInstance.notifications(mentions_only=True)
 
     def getNumberOfNotifications(self):
         return len(self._userApiInstance.notifications())
@@ -72,8 +55,6 @@ class Mastodon_Api:
     def getAccountData(self, account_id, admin=False):
         if not admin:
             return self._userApiInstance.account(account_id)
-        else:
-            return self._adminApiInstance.admin_account(account_id)
 
     def blockAccount(self, account_id):
         self._userApiInstance.account_block(account_id)

@@ -121,6 +121,7 @@ class LogIn(tk.Tk):
             self.waitTime(2)
             self.done_init = True
         except Exception:
+            self.widgets['main'][7]['state'] = tk.NORMAL
             if('elte.hu' not in self.server and '@' not in self.username):
                 showerror(message="You should enter your email "
                                             + "instead of your username "
@@ -130,6 +131,7 @@ class LogIn(tk.Tk):
                 showerror(message="Invalid credentials for mastodon account")
 
     def startApp(self):
+        self.widgets['main'][7]['state'] = tk.DISABLED
         self.update()
         self.after(0, self.initAppReq)
 
@@ -138,8 +140,6 @@ class LogIn(tk.Tk):
             if self.done_init:
                 break
             self.update()
-        self.widgets['main'][7]['state'] = tk.DISABLED
-        
         self.update()
         showinfo(message="You are now logged in")
         self.runningScreen()
@@ -166,10 +166,7 @@ class LogIn(tk.Tk):
             try:
                 self.accounts_reaching_user = []
                 self.after(2400, self.sendRequest)
-                t_end = time.time() + 2.6
-
-                while time.time() <= t_end:
-                    self.update()
+                self.waitTime(3)
 
                 if len(self.accounts_reaching_user) > 0:
                     for account in self.accounts_reaching_user:
@@ -276,7 +273,6 @@ class LogIn(tk.Tk):
 
     def waitTime(self, seconds):
         t_end = time.time() + seconds
-
         while time.time() <= t_end:
             self.update()
         

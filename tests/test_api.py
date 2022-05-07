@@ -2,9 +2,6 @@ from app.app import Application
 
 
 class TestAPI:
-    def testAccountCreation(self):
-        app = Application('kajdo', 'dinoni12', 'mastodon.elte.hu')
-        assert True == app.initApi()
     
     def testGetNotification(self):
         app = Application('kajdo', 'dinoni12', 'mastodon.elte.hu')

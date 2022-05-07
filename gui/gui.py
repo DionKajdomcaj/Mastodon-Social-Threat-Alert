@@ -115,10 +115,13 @@ class LogIn(tk.Tk):
         try:
             self.protocol('WM_DELETE_WINDOW', func=lambda: os._exit(0))
             self.app = Application(self.username, self.password, self.server)
-            self.app.initApi()
-            self.app.initDatabase()
+            self.after(0, self.app.initApi())
+            self.waitTime(2)
+            self.after(0, self.app.initDatabase())
+            self.waitTime(2)
             self.done_init = True
         except Exception:
+            self.widgets['main'][7]['state'] = tk.NORMAL
             if('elte.hu' not in self.server and '@' not in self.username):
                 showerror(message="You should enter your email "
                                             + "instead of your username "
@@ -128,8 +131,10 @@ class LogIn(tk.Tk):
                 showerror(message="Invalid credentials for mastodon account")
 
     def startApp(self):
+        self.widgets['main'][7]['state'] = tk.DISABLED
         self.update()
         self.after(0, self.initAppReq)
+
         while not self.done_init:
             self.update()
             if self.done_init:
@@ -161,10 +166,7 @@ class LogIn(tk.Tk):
             try:
                 self.accounts_reaching_user = []
                 self.after(2400, self.sendRequest)
-                t_end = time.time() + 2.6
-
-                while time.time() <= t_end:
-                    self.update()
+                self.waitTime(3)
 
                 if len(self.accounts_reaching_user) > 0:
                     for account in self.accounts_reaching_user:
@@ -269,6 +271,11 @@ class LogIn(tk.Tk):
         self.action_button.pack()
         self.canvas.pack()
 
+    def waitTime(self, seconds):
+        t_end = time.time() + seconds
+        while time.time() <= t_end:
+            self.update()
+        
     def stopApp(self):
         self.app.closeApp()
         self.destroy()

@@ -115,8 +115,10 @@ class LogIn(tk.Tk):
         try:
             self.protocol('WM_DELETE_WINDOW', func=lambda: os._exit(0))
             self.app = Application(self.username, self.password, self.server)
-            self.app.initApi()
-            self.app.initDatabase()
+            self.after(0,self.app.initApi())
+            self.waitTime(2)
+            self.after(0,self.app.initDatabase())
+            self.waitTime(2)
             self.done_init = True
         except Exception:
             if('elte.hu' not in self.server and '@' not in self.username):
@@ -130,11 +132,14 @@ class LogIn(tk.Tk):
     def startApp(self):
         self.update()
         self.after(0, self.initAppReq)
+
         while not self.done_init:
             self.update()
             if self.done_init:
                 break
             self.update()
+        self.widgets['main'][7]['state'] = tk.DISABLED
+        
         self.update()
         showinfo(message="You are now logged in")
         self.runningScreen()
@@ -269,6 +274,12 @@ class LogIn(tk.Tk):
         self.action_button.pack()
         self.canvas.pack()
 
+    def waitTime(self, seconds):
+        t_end = time.time() + seconds
+
+        while time.time() <= t_end:
+            self.update()
+        
     def stopApp(self):
         self.app.closeApp()
         self.destroy()

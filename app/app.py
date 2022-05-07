@@ -26,7 +26,6 @@ class Application:
         self.api.setUpAccounts()
         self.api.loginAccount(self.__username, self.__password, self.user)
         self.api.createApiInstance()
-        return True
 
     def initDatabase(self):
         try:

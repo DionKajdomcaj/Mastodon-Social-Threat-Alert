@@ -115,9 +115,9 @@ class LogIn(tk.Tk):
         try:
             self.protocol('WM_DELETE_WINDOW', func=lambda: os._exit(0))
             self.app = Application(self.username, self.password, self.server)
-            self.after(0,self.app.initApi())
+            self.after(0, self.app.initApi())
             self.waitTime(2)
-            self.after(0,self.app.initDatabase())
+            self.after(0, self.app.initDatabase())
             self.waitTime(2)
             self.done_init = True
         except Exception:

@@ -1,4 +1,5 @@
 import os
+from threading import Thread
 import time
 import tkinter as tk
 from PIL import ImageTk, Image
@@ -115,12 +116,8 @@ class LogIn(tk.Tk):
 
     def initAppReq(self):
         try:
-            self.after(100, self.waitTime(3.5))
             self.app = Application(self.username, self.password, self.server)
-            self.after(0, self.app.initApi())
-            self.waitTime(2)
-            self.after(0, self.app.initDatabase())
-            self.waitTime(2)
+            self.app.initApi()
             self.done_init = True
         except Exception:
             self.widgets['main'][7]['state'] = tk.NORMAL
@@ -135,13 +132,15 @@ class LogIn(tk.Tk):
     def startApp(self):
         self.widgets['main'][7]['state'] = tk.DISABLED
         self.update()
-        self.after(0, self.initAppReq)
-
+        init_thread = Thread(target=self.initAppReq, daemon=True)
+        init_thread.start()
         while not self.done_init:
             self.update()
             if self.done_init:
                 break
             self.update()
+        self.app.initDatabase()
+        init_thread.join()
         self.update()
         showinfo(message="You are now logged in")
         self.runningScreen()

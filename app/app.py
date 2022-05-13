@@ -82,9 +82,14 @@ class Application:
         domain = str(accound_data['url'].split('/')[2])
         if(action.lower() == 'block'):
             domain = accound_data['url'].split('/')[2]
-            self.api.blockDomain(domain, True)
-            self.__database.insertDomain(domain, True)
-            print("blocked")
+            if(domain not in self.__server):
+                print(domain)
+                print(self.__server)
+                self.api.blockDomain(domain)
+                self.__database.insertDomain(domain, True)
+                print("blocked")
+            else:
+                print("Your domain can't be blocked")
         else:
             self.__database.insertDomain(domain, False)
         return True

@@ -1,3 +1,5 @@
 from gui.gui import LogIn
-root = LogIn()
-root.mainloop()
+
+if __name__ == "__main__":
+    root = LogIn()
+    root.mainloop()

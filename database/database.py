@@ -95,7 +95,7 @@ class Database:
             return True
 
         except Exception:
-            print("SDi")
+            print("Already exists")
             return False
 
     def insertDomain(self, domain, blocked):
@@ -112,7 +112,7 @@ class Database:
             print("Data successfully inserted")
             return True
         except Exception:
-            print("SDi")
+            print("Already exists")
             return False
 
     def checkIfRecordExists(self, account_id):

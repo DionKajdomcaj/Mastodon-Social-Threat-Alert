@@ -21,6 +21,6 @@ pytest-cov==3.0.0
 pywin32-ctypes==0.2.0
 toml==0.10.2
 tomli==1.2.1
-Mastodon.py
+Mastodon.py==1.5.1
 scikit-learn==1.0.2
 pillow==9.1.0

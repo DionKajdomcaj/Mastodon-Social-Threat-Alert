@@ -167,7 +167,7 @@ class LogIn(tk.Tk):
             try:
                 self.accounts_reaching_user = []
                 self.after(2400, self.sendRequest)
-                self.waitTime(3)
+                self.waitTime(2.6)
 
                 if len(self.accounts_reaching_user) > 0:
                     for account in self.accounts_reaching_user:
